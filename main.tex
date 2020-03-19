@@ -14,11 +14,28 @@
 \usepackage{chemfig}%化学式
 \usetikzlibrary{trees}
 
+\usepackage{longtable}
+\usepackage{supertabular}
 %解决目录红框
 \hypersetup{
 colorlinks=true,
 linkcolor=black
 }
+
+\newcommand{\ie}{\emph{i.e.,~}}
+\newcommand{\etal}{\emph{et al.~}}
+\newcommand{\eg}{\emph{e.g.,~}}
+\newcommand{\wrt}{\emph{w.r.t\onedot~}}
+
+\newcommand{\fig}[1]{Figure~\ref{fig:#1}}
+\newcommand{\sect}[1]{Section~\ref{sec:#1}}
+\newcommand{\Eq}[1]{Eq.~(\ref{eq:#1})}
+\newcommand{\eq}[1]{\Eq{#1}}
+\newcommand{\tab}[1]{Table~\ref{tab:#1}}
+\newcommand{\alg}[1]{Algorithm~\ref{alg:#1}}
+
+\newcommand{\specialcell}[2][l]{%
+      \begin{tabular}[#1]{@{}l@{}}#2\end{tabular}}
 
 
 %将封面信息补全，相关专业名称过长的请在文字前添加命令\ziju{-0.15}
@@ -88,9 +105,10 @@ linkcolor=black
 
 %参考文献
 %\bibliographystyle{ref/rucbib}
-%\bibliography{ref/test}
+\bibliographystyle{unsrt}
+\bibliography{ref/reference}
 %\nocite{*}
-%\addcontentsline{toc}{chapter}{参考文献}
+\addcontentsline{toc}{chapter}{参考文献}
 
 %附录
 \appendix
