@@ -23,7 +23,7 @@ Youtube 上爬取了弱标注的视频数据来训练模型,尽管这种方法�
 评测中,这种方法不如前两种方法有效。
 
 在 TRECVID 2017 评测中,尽管基于概念的查询和特征表示仍然很主流,获得该评测第
-一名的 Snoek \etal\cite{snoek2017university}提出一种更加优雅的表示方式——VideoStory~\cite{habibian2014videostory}。对于每个没有标注
+一名的 Snoek \etal\cite{snoek2017university}提出一种更加优雅的表示方式——VideoStory\\~\cite{habibian2014videostory}。对于每个没有标注
 的视频,他们利用卷积神经网络提取深度特征,并通过线性变换将该特征转换到所谓的
 VideoStory 表示。这个表示进一步通过线性变换转换为词袋向量(Bag-of-words),而每个查
 询也用词袋向量进行表示。因此,视频与查询间的余弦相似度可以在词袋向量空间直接进行
@@ -35,7 +35,7 @@ VideoStory 表示。这个表示进一步通过线性变换转换为词袋向量
 在 TRECVID 2018 评测中,许多基于深度学习的方法来表示查询的方案出现了。Huang \etal\cite{huang2018informedia}使用了两个注意力模型和传统的基于概念的表示方法。Bastan \etal\cite{bastan2018ntu}使用 VSE++~\cite{faghri2017vse++}
 模型,获得了评测的第三名。而本文研究的基于全深度学习的方法 W2VV++效果最好。
 
-在 TRECVID 2019 评测中,Wu \etal\cite{wu2019hybrid}使用了混合的序列编码策略(GRU~\cite{cho2014learning},
+在 TRECVID 2019 评测中,Wu \etal\cite{wu2019hybrid}使用了混合的序列编码策略(GRU\\~\cite{cho2014learning},
 NetVLAD~\cite{arandjelovic2016netvlad}, DCGN~\cite{mao2018hierarchical})对视频的帧特征和文本的词特征进行建模,通过特征拼接的方式
 得到更加鲁棒的视频表示和文本表示,获得了评测的第一名,虽然混合编码策略的效果得到
 了验证,但是把三种特征进行简单的拼接并不是最优的选择。
