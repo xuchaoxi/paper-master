@@ -1,0 +1,70 @@
+\chapter{算法设计}
+
+\section{问题描述}
+对于给定一个以自然句子表示的即席查询$s$，共包含$l$个单词$\{w_1,w_2,...,\\w_l\}$，本文研究的目标是建立一个
+视频检索系统，即从$n$个未被标注的视频集$\{v_1,v_2,...,v_n\}$中搜索出与该查询相关的视频。问题的关键是构建
+一个跨模态的相似度函数$f(s,v) \in \mathbf{R}$，使得相关的句子视频对$(s,v^+)$的相似度比不相关的句子视频对$(s,v^-)$
+更大。相应地，在查询结果中相关的视频$v^+$会排在不相关的视频$v^-$的视频前。设$\mathbf{s}$和$\mathbf{v}$是查询与视频
+在公共空间的向量化表示，则跨模态的相似度由余弦相似度得到:
+\begin{equation}
+    \label{eq:cosine-sim}
+    \begin{aligned}
+        f(s,v) := \frac{\mathbf{s}^T\mathbf{v}}{\left\| \mathbf{s} \right\| \cdot \left\| \mathbf{v} \right\|}
+    \end{aligned}
+\end{equation}
+
+本研究着眼于查询表示学习，即由查询$s$获得在公共空间的向量$\mathbf{s}$，而视频可以像之前的工作一样由深度卷积网络得到
+的特征或者概念向量表示。
+
+\section{查询表示学习}
+本研究是建立在W2VV~\cite{}模型的基础上，W2VV模型原本是用在图像描述或者视频描述的检索任务上，共包含两个子网络，即一个
+句子编码网络，把一个句子向量化和一个转换网络，将句子向量转换到视觉特征空间中。本研究对W2VV做如下改进：
+\begin{itemize}
+    \item　使用一个更好的句子编码策略。
+
+    \item　使用一个更好的特征融合策略。
+
+    \item　使用一个更好的目标函数用于模型训练。
+\end{itemize}
+
+\subsection{句子编码网络}
+对于给定的一个句子$s$, 本研究同时使用三种编码技术对$s$进行向量化表示，即bag-of-words(bow)，word2vec(w2v)词嵌入和
+基于RNN的序列建模技术。对于bow编码技术，句子$s$的向量可以由如下式子得到：
+\begin{equation}
+    \label{eq:bow}
+    \begin{aligned}
+        bow(s) := (c(w_1,s),c(w_2,s),...,c(w_m,s))
+    \end{aligned}
+\end{equation}
+
+$c(w,s)$计算特定单词$w$在句子$s$中出现的次数，$m$表示给定词典的单词数量，本研究使用的词典由在训练数据中出现不少于5次
+的单词组成，并且根据NLTK~\cite{}去掉其中的停用词。
+
+对于一个给定的预训练w2v模型，用$e(w)$表示特定单词$w$的语义词嵌入向量，则w2v编码技术使用平均池化操作得到句子的向量：
+\begin{equation}
+    \label{eq:w2v}
+    \begin{aligned}
+        w2v(s) := \frac{1}{l}\sum^l_{i=1}e(w_i)
+    \end{aligned}
+\end{equation}
+
+本研究使用一个500维的使用预训练w2v模型~\cite{}，
+
+
+\subsection{转换网络}
+
+
+
+\section{视频特征表示}
+
+
+\section{目标函数}
+
+
+
+
+\section{公共空间表示}
+
+
+
+
