@@ -17,8 +17,8 @@
 的特征或者概念向量表示。
 
 \section{查询表示学习}
-本研究是建立在W2VV~\cite{dong2018predicting}模型的基础上，W2VV模型原本是用在图像描述或者视频描述的检索任务上，共包含两个子网络，即一个
-句子编码网络，把一个句子向量化和一个转换网络，将句子向量转换到视觉特征空间中。本研究对W2VV做如下改进：
+本研究是建立在W2VV~\cite{dong2018predicting}模型的基础上，W2VV模型原本是用在图像描述或者视频描述的检索任务上，
+共包含两个子网络，即一个句子编码网络，把一个句子向量化和一个转换网络，将句子向量转换到视觉特征空间中，如图\ref{fig:model1}所示。本研究对W2VV做如下改进：
 \begin{itemize}
     \item　使用一个更好的句子编码策略。
 
@@ -26,6 +26,20 @@
 
     \item　使用一个更好的目标函数用于模型训练。
 \end{itemize}
+
+\begin{figure*}[tbh!]
+    \centering
+    \includegraphics[width=\linewidth]{figures/model1}
+    \caption[模型１]{这是模型１}
+    \label{fig:model1}
+\end{figure*}
+
+\begin{figure*}[tbh!]
+    \centering
+    \includegraphics[width=\linewidth]{figures/model2}
+    \caption[模型２]{这是模型２}
+    \label{fig:model2}
+\end{figure*}
 
 \subsection{句子编码网络}
 对于给定的一个句子$s$, 本研究同时使用三种编码技术对$s$进行向量化表示，即bag-of-words(bow)，word2vec(w2v)词嵌入和
@@ -103,15 +117,15 @@ $\sigma_g$表示sigmoid函数，$\sigma_h$表示双曲正切函数，操作$\cir
 \section{视频特征表示}
 正如前文所言，本研究的目标在于查询表示学习，因此，对于视频的表示，本文简单地使用最先进的深度卷积网络通过过采样的方式提取视觉特征，
 并且使用平均池化的操作获得视频的特征表示，如图\ref{fig:video-cnn-feat}所示。本文使用两个深度卷积网络模型进行视频的特征提取：
-ResNext-101~\cite{}和ResNet-152~\cite{}。对于每个模型，本文选择模型的分类层输出作为特征，维度为2048维。
+ResNeXt-101~\cite{xie2017aggregated}和ResNet-152~\cite{he2016deep}。对于每个模型，本文选择模型的分类层输出作为特征，维度为2048维。
 对于给定一个视频，本研究以0.5秒为间隔对视频的帧进行均匀采样。每张采样的图像的大小调整为$256\times256$，然后以$224\times224$大小
 的窗口对该图像与其水平翻转得到的图像的四个角和中央进行裁剪，得到该图像的10张子图，这１０张子图分别经过卷积网络提取特征并且进行
 平均池化操作，得到该图像的特征表示。相应地，2048维的视频特征由图像特征进行平均池化得到。为了方便表示，本文将使用$ResNeXt$和$Resnet$
 表示经过这两种卷积网络得到的视频特征，$ResNeXt$-$Resnet$表示这两种特征进行拼接得到的4096维的视频特征。
 
-原则上，本研究的模型可以使用任何的视频特征表示，包括概念特征向量~\cite{}和3D卷积网络特征~\cite{}。
+原则上，本研究的模型可以使用任何的视频特征表示，包括概念特征向量~\cite{markatopoulou2017query,lu2016event,merler2012semantic}和3D卷积网络特征~\cite{mithun2018learning}。
 
-\begin{figure*}[tbhp!]
+\begin{figure*}[tbh!]
     \centering
     \includegraphics[width=\linewidth]{figures/video-cnn-feat}
     \caption[视频特征提取示例]{视频特征提取示例}
