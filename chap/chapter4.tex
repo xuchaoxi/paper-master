@@ -1,0 +1,134 @@
+\chapter{实验}
+\section{算法实现}
+本研究使用PyTorch~\cite{}的深度学习框架实现W2VV++算法模型和TEE算法模型，使用RMSProp~\cite{}优化器进行模型的训练，优化器的学习率
+根据实验经验设为0.0001，而其他参数使用默认值。为了防止训练时出现梯度爆炸，本研究把训练时的梯度降低l2范数倍。学习率在每次训练结束
+后降为原来的0.99倍，如果模型在验证集上的性能连续三次没有提高则学习率降为原来的0.5倍。如果在验证集的性能连续10次没有提高，则模型训练
+停止。本研究选择在验证集上性能最好的模型。
+
+每次模型训练批次的大小为128对相关的句子－视频对，在每个批次给定的一个句子，本研究简单把该批次里的其余剩余视频当作该句子的不相关视频，
+即该句子与这些不相关视频构成负样本，而本研究使用的最难负例来计算损失的策略，即选择这些负例中的最不相关的句子视频对来最后计算损失，
+具体是余弦相似度最大的句子视频对作为最难负例。而公式\ref{eq:loss}损失函数的超参数$\alpha$设为0.2。为了避免出现过拟合，本研究在转换网络的全连接层使用概率为0.2的随机失活技术。
+
+\section{实验数据}
+为了验证本研究的算法的有效性，本研究设置了两组实验，一组是在TRECVID AVS任务上的，因为本研究的本质也是文本检索视频的任务，因此在
+具有权威的视频检索数据集msrvtt10k上的实验验证本研究模型的有效性。
+
+\subsection{TRECVID AVS实验数据}
+本研究使用的训练、验证与测试集的一些基本统计如表格\ref{tab:dataset1}所示。
+
+\textbf{训练集}：本研究使用MSR-VTT~\cite{}和TGIF~\cite{}两个数据结合作为训练集。MSR-VTT数据包含1万个网络视频片段和20万个描述视频片段内容的句子，即每个视频片段有20个描述句子。
+本研究对每段视频进行均匀采样，共生成305,462帧图像。而TGIF数据包含超过10万张动图和12万个描述动图内容的句子。本研究同样对每个动图进行均匀采样，生成1,045,268帧图像。
+
+\textbf{验证集}：本研究使用TRECVID 2016 Video-to-Text任务~\cite{}的训练集作为验证集，命名为TV16-VTT-train，用于模型训练阶段的
+最优模型选择。这个集合共包含200个视频，每个视频含有2个描述视频内容的句子。对于每个视频，本文选择第一个句子作为该视频的文本查询，
+而剩余的199个视频则是该查询的不相关视频。相应地，本研究使用平均倒数排名(mean reciprocal rank, MRR)作为评价模型在该验证集性能的指标。
+\begin{table} [tbh!]
+    \caption[AVS数据集]{这是AVS数据集的基本统计描述}
+    \label{tab:avs-dataset}
+    \centering
+    \scalebox{0.96}{
+        \begin{tabular}{@{}l r r r r r@{}}
+            \toprule
+            \textbf{数据集名称} & \textbf{镜头数} & \textbf{帧数} & \textbf{句子数} & \textbf{bow词典大小} & \textbf{GRU词典大小} \\
+            \hline
+            \emph{训练集：} & & & & & \\
+            MSR-VTT & 10,000 & 305,462 & 200,000 & \multirow{2}{*}{11,147} & \multirow{2}{*}{11,282} \\
+            TGIF & 100,855 & 1,045,268 & 124,534 & & \\
+            \hline
+            \emph{验证集：} & & & & & \\ 
+            TV16-VTT-train & 200 & 5,941 & 200 & - & - \\
+            \hline
+            \emph{测试集：} & & & & & \\
+            IACC.3 & 335,944 & 3,845,221 & - & - & - \\
+            V3C1 & 1,082,649 & 7,839,450 & - & - & - \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table}
+
+
+\textbf{视频测试集}：本研究使用TRECVID AVS任务的官方测试集IACC.3(2016-2018)~\cite{}和V3C1(2019)~\cite{}。IACC.3数据集包含4,953个网络视频（600小时），视频的时长从6.5分钟到9.5分钟，平均时长为7.8分钟。
+官方已经对视频做了自动镜头边界检测，共生成335,944个视频片段。本研究同样对每个视频片段进行均匀采样，共生成3,845,221帧图像。
+
+\textbf{查询测试集}：TRECVID AVS官方每年定义30个查询来进行测试，每个查询是自然语言的句子形式，具有不同的长度和不同的语义难度。
+例如“Find shots of palm trees”，“Find shots of a man with beard and wearing white robe speaking and gesturing to camera”和
+“Find shots of a truck standing still while a person is walking beside or in front of it”。所有的查询均以“Find shots of”的短语开头，因此在测试时可以很容易地去掉。
+
+\textbf{性能指标}：本研究使用TRECVID AVS任务官方的评测指标，推断平均准确率(inferred average precision, infAP)~\cite{}作为该节实验的模型评价指标，而模型的总体性能是所有测试查询的infAP分数的平均值，该值越高，模型的视频检索效果越好。
+
+
+
+
+
+
+
+\section{实验结果}
+\subsection{插图表格}
+\begin{figure}[htbp]
+\centering\includegraphics[width=5cm,height=1.32cm]{figures/logo3.pdf}
+\caption[中英校名]{中英校名}
+\end{figure}
+\begin{table}[htbp]
+\noindent\begin{minipage}{0.5\textwidth}
+\centering
+\caption{并排子表格}
+\label{tab:parallel1}
+\begin{tabular}{p{2cm}p{2cm}}
+\toprule[1.5pt]
+姓名 & 性别 \\\midrule[1pt]
+李狗蛋 & 女 \\\bottomrule[1.5pt]
+\end{tabular}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\centering
+\caption{并排子表格}
+\label{tab:parallel2}
+\begin{tabular}{p{2cm}p{2cm}}
+\toprule[1.5pt]
+姓名 & 性别 \\\midrule[1pt]
+张狗蛋 & 女 \\\bottomrule[1.5pt]
+\end{tabular}
+\end{minipage}
+\end{table}
+\begin{table}[htbp]
+\centering
+\caption{并排子表格}
+\label{tab:subtable}
+\subtable[第一个子表格]
+{
+\begin{tabular}{p{2cm}p{2cm}}
+\toprule[1.5pt]
+姓名 & 性别 \\\midrule[1pt]
+田狗蛋 & 男 \\\bottomrule[1.5pt]
+\end{tabular}
+}
+\hskip2cm
+\subtable[第二个子表格]
+{
+\begin{tabular}{p{2cm}p{2cm}}
+\toprule[1.5pt]
+姓名 & 性别 \\\midrule[1pt]
+李狗蛋 & 女 \\\bottomrule[1.5pt]
+\end{tabular}
+}
+\end{table}
+
+\subsection{数学环境}
+下面是几个数学公式的例子：\par
+\begin{equation}
+\begin{aligned}
+P\{S_n \leq t\} &= \int_{-\infty}^{+\infty}f_{S_n}dt \notag \\
+                       &= \int_0^t\frac{\lambda(\lambda u)^{n-1}}{(n-1)!}e^{-\lambda u}du \\
+                       &\xlongequal{令 \lambda u=x} \frac{1}{(n-1)!}\int_0^{\lambda t}x^{n-1}e^{-x}dx\\
+                       &=\frac{-1}{(n-1)!}(e^{-x}x^{n-1}{\Big|}_0^{\lambda t}-\int_0^{\lambda t}e^{-x}dx^{n-1})\\
+                       &=\frac{-1}{(n-1)!}e^{-x}x^{n-1}{\Big|}_0^{\lambda t}+\frac{1}{(n-2)!}\int_0^{\lambda t}e^{-x}x^{n-2}dx
+\end{aligned}
+\end{equation}\par
+再来几个：
+\begin{equation}
+\begin{aligned}
+\lambda &=\left (1+\frac{\left(\frac{\bar{X}-\bar{Y}}{\sqrt{((\frac{1}{n}+\frac{1}{m})\sigma^2)}}\right)^2}{\left(\sqrt{\frac{\sum\limits_{i=1}^n(X_i-\bar{X})^2+\sum\limits_{i=1}^m(Y_i-\bar{Y})^2}{(m+n)\sigma^2}}\right)^2(m+n-2)}\right)^{\frac{n+m}{2}} \\ \notag
+            &=\left(1+\frac{T^2}{n+m-2}\right)^{\frac{n+m}{2}}\\
+ 其中\quad T^2 &=\left(\frac{\frac{\bar{X}-\bar{Y}}{\sqrt{((\frac{1}{n}+\frac{1}{m})\sigma^2)}}}{{\sqrt{\frac{\sum\limits_{i=1}^n(X_i-\bar{X})^2+\sum\limits_{i=1}^m(Y_i-\bar{Y})^2}{(m+n)\sigma^2}}}}\right)^2
+\end{aligned}
+\end{equation}
