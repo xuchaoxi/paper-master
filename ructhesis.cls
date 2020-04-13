@@ -76,7 +76,8 @@
 \RequirePackage[top=25mm,left=25mm,bottom=25mm,right=20mm,footskip=10mm]{geometry}
 \setlength{\topskip}{10mm}
 \else
-\RequirePackage[top=45mm,left=35mm,bottom=40mm,right=30mm,headsep=20mm]{geometry}
+%\RequirePackage[top=45mm,left=35mm,bottom=40mm,right=30mm,headsep=20mm]{geometry}
+\RequirePackage[top=45mm,left=35mm,bottom=40mm,right=30mm,headsep=10mm]{geometry} %解决页眉和正文距离太远
 \fi
 \RequirePackage{hyperref}
 \AtBeginDocument{
@@ -90,6 +91,7 @@ pdfsubject={中国人民大学学位论文}}
 \setmonofont{CourierNewPSMT}
 \xeCJKsetup{AutoFakeSlant={true}}
 \setCJKmainfont{SimSun}
+%\setCJKmainfont{SimSun}[AutoFakeBold]
 \setCJKsansfont{SimHei}
 \setCJKmonofont{FangSong}
 \newcommand{\rowspace}{%
@@ -300,7 +302,8 @@ chapter = {
 name = {第,章},
 number = \arabic{chapter}
 },
-chapter/format =\centering,
+%chapter/format =\centering,
+chapter/format =\vspace{-30mm}\centering, %　解决每一章标题前面空白过大
 chapter/numberformat = \bf\zihao{-2},
 chapter/nameformat = \sf\zihao{-2},
 chapter/titleformat = \sf\zihao{-2},
