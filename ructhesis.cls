@@ -86,7 +86,7 @@ pdftitle={\@title},
 pdfauthor={\@author},
 pdfsubject={中国人民大学学位论文}}
 }
-\setmainfont{TimesNewRomanPSMT}
+\setmainfont{TimesNewRomanPSMT}[AutoFakeBold]
 \setsansfont{ArialMT}
 \setmonofont{CourierNewPSMT}
 \xeCJKsetup{AutoFakeSlant={true}}
