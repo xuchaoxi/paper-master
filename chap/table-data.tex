@@ -1,0 +1,66 @@
+\begin{table} [tb!]
+\renewcommand{\arraystretch}{1.2}
+    \caption[本文实验所用的数据集]{\textbf{本文实验所用的数据集}。 本文所有的实验均用对应的训练集（train set）对模型进行训练，用对应的验证集（val. set）对模型进行验证，用对应的测试集（test set）对模型进行测试。}
+
+\label{tab:datasets}
+\centering
+ \scalebox{0.87}{
+ \begin{tabular}{@{} |l | l |r |r|r|r|r|@{}}
+\hline
+
+
+     \textbf{数据划分} & \textbf{数据名称} & \textbf{视频数} & \textbf{帧数} & \textbf{查询数} & \textbf{bow词典} & \textbf{GRU词典} \\
+\hline
+\multicolumn{7}{|l|}{\textbf{MSR-VTT 实验:}} \\
+\hline
+     \textit{train set} & \multirow{4}{*}{MSR-VTT~\cite{msrvtt}} & 6,513 & 197,648 & -- & 7,676 & 7,807 \\
+\cline{1-1}  \cline{3-7} 
+     \textit{val. set} &  & 497 & 15,347 & 9,940 & -- & -- \\
+\cline{1-1}  \cline{3-7}
+     \textit{test-full} &  & 2,990 & 92,467 & 59,800 & -- & -- \\
+\cline{1-1}  \cline{3-7}
+     \textit{test-1k}~\cite{yu2018a} &  & 1,000 & 30,932 & 1,000 & -- & -- \\
+
+\hline
+\hline
+\multicolumn{7}{|l|}{\textbf{TRECVID 实验:}} \\
+\hline
+     \multirow{2}{*}{\textit{train set}} & MSR-VTT~\cite{msrvtt}  & 10,000 & 305,462 & --  & \multirow{2}{*}{11,147} & \multirow{2}{*}{11,282} \\
+\cline{2-5}
+     & TGIF~\cite{li2016tgif}   & 100,855 & 1,045,268 & -- &  & \\
+\hline
+     \textit{val. set} & TV16-VTT-dev~\cite{awad2016trecvid}  & 200 & 5,941 & 200  & -- & -- \\
+\hline
+     \specialcell{\textit{test set} for \\ TV16/17/18} & IACC.3~\cite{awad2016trecvid}  & 335,944 & 3,845,221 & 90 & -- & -- \\
+\hline
+     \specialcell{\textit{test set} for \\TV19} & V3C1~\cite{berns2019v3c1} & 1,082,649 & 7,839,450 & 30 & -- & -- \\
+\hline
+\end{tabular}
+ }% end of scalebox
+\end{table}
+
+
+%\begin{table} [tbh!]
+%    \caption[AVS数据集]{这是AVS数据集的基本统计描述}
+%    \label{tab:avs-dataset}
+%    \centering
+%    \scalebox{0.96}{
+%        \begin{tabular}{@{}l r r r r r@{}}
+%            \toprule
+%            \textbf{数据集名称} & \textbf{镜头数} & \textbf{帧数} & \textbf{句子数} & \textbf{bow词典大小} & \textbf{GRU词典大小} \\
+%            \hline
+%            \emph{训练集：} & & & & & \\
+%            MSR-VTT & 10,000 & 305,462 & 200,000 & \multirow{2}{*}{11,147} & \multirow{2}{*}{11,282} \\
+%            TGIF & 100,855 & 1,045,268 & 124,534 & & \\
+%            \hline
+%            \emph{验证集：} & & & & & \\ 
+%            TV16-VTT-train & 200 & 5,941 & 200 & - & - \\
+%            \hline
+%            \emph{测试集：} & & & & & \\
+%            IACC.3 & 335,944 & 3,845,221 & - & - & - \\
+%            V3C1 & 1,082,649 & 7,839,450 & - & - & - \\
+%            \bottomrule
+%        \end{tabular}
+%    }
+%\end{table}
+

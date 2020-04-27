@@ -1,0 +1,49 @@
+
+
+\begin{table}[tb!]
+\normalsize
+\renewcommand\arraystretch{1.2}
+\centering
+\caption{\textbf{State-of-the-art on MSR-VTT for text-based video retrieval}. All numbers are from the cited papers except for \cite{vsepp,dong-cvpr19,w2vvpp}, which are re-trained using their code with the same resnext-resnet feature as used in this work. On both the \textit{test-1k} set and the \textit{full} test set, our proposed \textit{SEA}(\{bow, w2v, GRU, BERT\}) is the best.}
+\label{tab:sota-msrvtt}
+\scalebox{0.9}{
+\begin{tabular}{@{}|l |l | r | r | r | r | r|@{}}
+\hline
+\specialcell{\textbf{Test}\\\textbf{set}} & \textbf{Model} & \textbf{R@1} & \textbf{R@5} & \textbf{R@10} & \specialcell{\textbf{Med}\\\textbf{r}} & \textbf{mAP} \\
+\hline
+\multirow{4}{*}{\specialcell{\textit{1k}\\\cite{yu-eccv18}}} & JSFusion~\cite{yu-eccv18} & 10.2 & 31.2 & 43.2 & 13 & n.a. \\
+\cline{2-7}
+%& Miech \etal~\cite{miech-iccv19} & 12.1 & 35.0 &  48.0 & 12 & n.a. \\
+& VSE++~\cite{vsepp} & 15.2	& 37.7 & 50.1 & 10 & 26.0 \\
+\cline{2-7}
+& Miech \etal~\cite{miech-iccv19} &14.9 & 40.2 &  52.8 & 9  & n.a. \\
+\cline{2-7}
+& UniViLM~\cite{luo2020univilm} & 15.4 & 39.5 & 52.3 & 9 & n.a. \\
+\cline{2-7}
+& Dual Encoding~\cite{dong-cvpr19} & 18.8 & 44.4 & 57.2 & 7 &31.6 \\
+\cline{2-7}
+& W2VV++~\cite{w2vvpp} & 18.9 & 45.3 & 57.5 & 8 & 31.6 \\
+\cline{2-7}
+& CE~\cite{liu-bmvc19}  & 20.9 & 48.8 & \best{62.4} & 6 & n.a. \\
+\cline{2-7}
+%& \textit{TEE}~(bow,w2v,BERT) & \textbf{22.9} & \textbf{50.4} & \textbf{63.2}	& \textbf{5} & \textbf{35.8} \\
+& \tea & \best{23.7} & \best{50.1} & \best{62.4} & \best{5}	& \best{36.2} \\ 
+
+\hline
+\hline
+\multirow{5}{*}{\textit{Full}} & Mithun \etal~\cite{mithun-icmr18} & 7.0 & 20.9 & 29.7 & 38 & n.a. \\
+\cline{2-7}
+& VSE++ & 8.7 & 24.3 & 34.1  & 28 & 16.9 \\
+\cline{2-7}
+& CE & 10.0 & 29.0 & 41.2 &	16 & n.a. \\
+\cline{2-7}
+& Dual Encoding & 11.1 & 29.4 & 40.3 & 19 & 20.5 \\
+\cline{2-7}
+& W2VV++ & 11.1 & 29.6 & 40.5 &	18	& 20.6 \\
+\cline{2-7}
+%& \emph{TEE}~(bow,w2v,BERT)  & \textbf{12.8} & \textbf{33.1} & \textbf{44.6} & \textbf{14} & \textbf{23.0} \\ 
+& \tea & \best{13.0} & \best{33.6} & \best{44.9} & \best{14}	& \best{23.3} \\
+\hline
+\end{tabular}
+}
+\end{table}

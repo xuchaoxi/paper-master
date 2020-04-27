@@ -1,0 +1,32 @@
+
+
+\begin{table*}[tbh!]
+\normalsize
+\renewcommand\arraystretch{1.2}
+\centering
+\caption{\textbf{Joint evaluation of sentence encoders and their assembly models, \ie W2VV++ and the proposed \emph{SEA}, on MSR-VTT and TRECVID}. Numbers are shown in percentages, with top performers highlighted in \best{bold} font. For a given setup of sentence encoders, relative improvement of SEA over its W2VV++ counterpart is given in parentheses, showing that SEA is consistently better.}
+\label{taba:w2vvpp}
+\scalebox{0.9}{
+\begin{tabular}{@{}|l | r | r | r | r | l|| r | r | r | r | l|@{}}
+\hline
+\multirow{2}{*}{\textbf{模型}} & \multicolumn{5}{c||}{\textbf{MSR-VTT} (test-full)} & \multicolumn{5}{c|}{\textbf{TRECVID} (指标: infAP)}  \\
+\cline{2-11}
+ & \textit{R@1} & \textit{R@5} & \textit{R@10} & \textit{Med r} & \textit{mAP} & \textit{TV16} & \textit{TV17} & \textit{TV18} & \textit{TV19} & \textit{AVG}  \\
+
+\hline
+W2VV &  &  &  &  & & & & & & \\
+
+\cline{1-11}
+W2VV$_{gru\_last}$ &  &  &  &  & & & & & & \\
+
+\cline{1-11}
+W2VV$_{ITRL}$ &  &  &  &  & & & & & & \\
+
+\cline{1-11}
+W2VV++ &  11.1 & 29.6 & 40.5 & 18 & 20.6  & 16.2 & 22.3 & 10.1 & 13.9 & 15.6 \\
+
+\hline 
+
+\end{tabular}
+}
+\end{table*}

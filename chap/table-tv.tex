@@ -1,0 +1,40 @@
+
+
+
+
+\begin{table}[tb!]
+\normalsize
+\renewcommand\arraystretch{1.2}
+\centering
+\caption{\textbf{State-of-the-art on the TRECVID Ad-hoc video search (AVS) benchmarks}. \tea(\{bow, w2v\}) surpasses the prior art, while Dual Encoding + \tea, which is late average fusion of the two models, boosts the performance further.}
+\label{tab:sota-tv}
+\scalebox{0.85}{
+\begin{tabular}{@{}|l | l | l | l | l | c| @{}}
+\hline
+\textbf{Model} & \textbf{TV16} & \textbf{TV17} & \textbf{TV18} & \textbf{TV19} & \textbf{SUM} \\
+\hline 
+\multicolumn{6}{|l|}{Top-3 TRECVID finalists:}  \\
+\cline{2-6}
+Rank 1 & \textcolor{white}{0}5.4~\cite{tv16-nii} & 20.6~\cite{tv17-uva} & 12.1~\cite{tv18-rucmm} & 16.3~\cite{tv19-alibaba} & n.a. \\ 
+Rank 2 & \textcolor{white}{0}5.1~\cite{tv16-certh} & 15.9~\cite{tv17-waseda} & \textcolor{white}{0}8.7~\cite{tv18-inf} & 16.0~\cite{tv19-rucmm} & n.a.\\
+Rank 3 & \textcolor{white}{0}4.0~\cite{tv16-inf} & 12.0~\cite{tv17-vireo} &  \textcolor{white}{0}8.2~\cite{tv18-ntu} & 12.3~\cite{tv19-waseda} & n.a.\\
+\hline
+VideoStory~\cite{habibian-pami17} & \textcolor{white}{0}8.7 & 15.0 & n.a. & n.a. & n.a. \\
+\hline
+VSE++~\cite{vsepp} & 13.5 & 16.3  & 10.6 & \textcolor{white}{0}9.8  & 50.2\\ 
+\hline
+W2VV++~\cite{w2vvpp} & 16.2 & 22.3 & 10.1 & 13.9 & 62.5   \\
+\hline
+Dual Encoding~\cite{dong-cvpr19} & 16.5 & 22.8 & 11.7 & 15.2 & 65.6 \\
+\hline
+\tea  & 15.7 & 23.4 & \best{12.8}  & 16.6 & 68.5\\
+\hline 
+Dual Encoding + \tea & \best{17.3} & \best{25.0} & \best{12.8} & \best{17.1} & \best{72.2} \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+
+
+%\input{table-w2vvpp-avs}

@@ -1,0 +1,38 @@
+
+
+\begin{table*}[tbh!]
+\normalsize
+\renewcommand\arraystretch{1.2}
+\centering
+\caption{\textbf{Joint evaluation of sentence encoders and their assembly models, \ie W2VV++ and the proposed \emph{SEA}, on MSR-VTT and TRECVID}. Numbers are shown in percentages, with top performers highlighted in \best{bold} font. For a given setup of sentence encoders, relative improvement of SEA over its W2VV++ counterpart is given in parentheses, showing that SEA is consistently better.}
+\label{tab:tee_vs_w2vvpp}
+\scalebox{0.75}{
+\begin{tabular}{@{}|l | l | r | r | r | r | l|| r | r | r | r | l|@{}}
+\hline
+\multirow{2}{*}{\textbf{模型}} & \multirow{2}{*}{\textbf{视频特征}} & \multicolumn{5}{c||}{\textbf{MSR-VTT} (test-full)} & \multicolumn{5}{c|}{\textbf{TRECVID} (指标: infAP)}  \\
+\cline{3-12}
+ & & \textit{R@1} & \textit{R@5} & \textit{R@10} & \textit{Med r} & \textit{mAP} & \textit{TV16} & \textit{TV17} & \textit{TV18} & \textit{TV19} & \textit{AVG}  \\
+
+\hline
+\multirow{3}{*}{W2VV++} & $ResNet$ &  &  &  &  & & & & & & \\
+
+\cline{2-12}
+ & $ResNeXt$ &  & & & & & 14.0 & 17.1 & 10.3 & & \\
+
+\cline{2-12}   
+ & $ResNeXt$-$ResNet$ & 11.1 & 29.6 & 40.5 & 18 & 20.6  & 16.2 & 22.3 & 10.1 & 13.9 & 15.6 \\
+
+\hline
+\multirow{3}{*}{SEA} & $ResNet$ & & & & & & & & & & \\
+
+\cline{2-12}
+ & $ResNeXt$ & & & & & & & & & & \\
+
+\cline{2-12}
+    & $ResNeXt$-$ResNet$ & \best{12.2} & \best{31.9} & \best{43.1} & \best{15} & \best{22.1} & 15.0 & \best{23.4} & \best{12.2} & \best{16.6} & \best{16.8} \\
+
+\hline 
+
+\end{tabular}
+}
+\end{table*}
