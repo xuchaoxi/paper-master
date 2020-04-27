@@ -57,7 +57,7 @@ Ueki等人~\cite{ueki2019waseda}为了充分提取视频的图像信息，使用
 
 而在视频片段检索领域，Yu等人~\cite{vsrel2020}使用了类似的做法，他们首先使用预训练的卷积神经网络VGG提取视频的帧图像特征，并使用平均池化的操作得到视频的物体特征，另外，他们还使用一个双流的卷积神经网络temporal segment network（TSN）~\cite{wang2016temporal}来提取视频的活动特征，该双流网络同时以帧图像和视频的光流作为输入。同样，他们单独地为这两类特征学习一个公共空间，并使用平均的方式后融合这两个公共空间。
 
-考虑到视频具有非常复杂的信息，Miech等人在文献~\cite{miech2018learning}中提出的嵌入专家混合模型（Mixture of embedding experts，MEE） 使用多种视频的特征，包括ResNet-152对视频帧图像提取的物体特征，由I3D提取的视频的动作特征，由audio CNN提取视频的音频特征，他们还使用dlib框架~\footnote{http://dlib.net/}检测视频内的人脸并使用该框架里在人脸识别任务预训练的ResNet提取这些人脸特征，然后他们使用最大值池化对物体特征、动作特征和人脸特征在时间维度上进行池化，并使用NetVLAD对音频特征进行聚合，从而得到这视频级的这四种特征。而对于文本表示，他们先使用word2vec对句子的每个单词提取得到稠密特征，然后使用NetVLAD对单词特征进行聚合操作从而得到句子的特征表示。然后他们使用门控嵌入模块（Gated Embedding Module）来对这两种模态的特征进行处理，具体如公式~\ref{eq:gated-embedding-module}所示，
+考虑到视频具有非常复杂的信息，Miech等人在文献~\cite{miech2018learning}中提出的嵌入专家混合模型（Mixture of embedding experts，MEE） 使用多种视频的特征，包括ResNet-152对视频帧图像提取的物体特征，由I3D提取的视频的动作特征，由audio CNN提取视频的音频特征，他们还使用dlib框架~\footnote{\url{http://dlib.net/}}检测视频内的人脸并使用该框架里在人脸识别任务预训练的ResNet提取这些人脸特征，然后他们使用最大值池化对物体特征、动作特征和人脸特征在时间维度上进行池化，并使用NetVLAD对音频特征进行聚合，从而得到这视频级的这四种特征。而对于文本表示，他们先使用word2vec对句子的每个单词提取得到稠密特征，然后使用NetVLAD对单词特征进行聚合操作从而得到句子的特征表示。然后他们使用门控嵌入模块（Gated Embedding Module）来对这两种模态的特征进行处理，具体如公式~\ref{eq:gated-embedding-module}所示，
 \begin{equation}
     \label{eq:gated-embedding-module}
     \begin{aligned}
