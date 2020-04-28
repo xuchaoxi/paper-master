@@ -4,9 +4,9 @@
 \normalsize
 \renewcommand\arraystretch{1.2}
 \centering
-\caption{\textbf{Joint evaluation of sentence encoders and their assembly models, \ie W2VV++ and the proposed \emph{SEA}, on MSR-VTT and TRECVID}. Numbers are shown in percentages, with top performers highlighted in \best{bold} font. For a given setup of sentence encoders, relative improvement of SEA over its W2VV++ counterpart is given in parentheses, showing that SEA is consistently better.}
-\label{taba:w2vvpp}
-\scalebox{0.9}{
+    \caption[在MSR-VTT和TRECVID上联合评测目标函数不同的模型和文本编码器融合方式不同的模型]{\textbf{在MSR-VTT和TRECVID上联合评测目标函数不同的模型和文本编码器融合方式不同的模型}。评价指标除了中位排序数Med r均以百分数的形式显示（\%），其中最好的结果用\best{粗体}标出。本文提出的W2VV++模型对基础模型W2VV的目标函数的改进起到了很大的作用，并且也更有效地使用了GRU编码器，而使用多空间多目标函数融合文本编码器的SEA模型的性能最好。}
+\label{tab:loss_fusion}
+\scalebox{0.79}{
 \begin{tabular}{@{}|l | r | r | r | r | l|| r | r | r | r | l|@{}}
 \hline
 \multirow{2}{*}{\textbf{模型}} & \multicolumn{5}{c||}{\textbf{MSR-VTT} (test-full)} & \multicolumn{5}{c|}{\textbf{TRECVID} (指标: infAP)}  \\
@@ -14,19 +14,31 @@
  & \textit{R@1} & \textit{R@5} & \textit{R@10} & \textit{Med r} & \textit{mAP} & \textit{TV16} & \textit{TV17} & \textit{TV18} & \textit{TV19} & \textit{AVG}  \\
 
 \hline
-W2VV &  &  &  &  & & & & & & \\
+W2VV & 1.1 & 4.7 & 8.0 & 240 & \textcolor{white}{0}3.7 & 1.3 & 0.8 & 0.4 & 0.2 & \textcolor{white}{0}0.7 \\
 
 \cline{1-11}
-W2VV$_{gru\_last}$ &  &  &  &  & & & & & & \\
+W2VV$_{ITRL}$ & 9.7 & 27.2 & 37.3 & 22 & 18.7 & 13.8 & 18.8 & 10.5 & 11.4 & 13.6 \\
 
 \cline{1-11}
-W2VV$_{ITRL}$ &  &  &  &  & & & & & & \\
+W2VV++ &  11.1 & 29.6 & 40.5 & 18 & 20.6  & \best{16.2} & 22.3 & 10.1 & 13.9 & 15.6 \\
 
 \cline{1-11}
-W2VV++ &  11.1 & 29.6 & 40.5 & 18 & 20.6  & 16.2 & 22.3 & 10.1 & 13.9 & 15.6 \\
+Transformed W2VV++ & 10.5 & 28.2 & 39.0 & 20 & 19.5 & 13.9 & 20.2 & 10.2 & 13.5 & 14.5 \\
+
+\cline{1-11}
+Model averaging & 12.0 & 31.8 & 42.9 & 16 & 22.0  & 14.9 & 21.9 & 11.6 & 15.4 & 16.0 \\
+
+\cline{1-11}
+SEA single loss & 11.8 & 31.0 & 42.0 & 17 & 21.5  & 14.7 & 21.8 & 11.2 & 14.7 & 15.6 \\
+
+\cline{1-11}
+SEA combined loss & \best{12.2} & \best{31.9} & \best{43.1} & \best{15} & \best{22.1}  & 15.0 & \best{23.4} & \best{12.2} & \best{16.6} & \best{16.8} \\
+
 
 \hline 
 
 \end{tabular}
 }
 \end{table*}
+
+

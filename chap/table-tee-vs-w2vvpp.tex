@@ -4,9 +4,9 @@
 \normalsize
 \renewcommand\arraystretch{1.2}
 \centering
-\caption{\textbf{Joint evaluation of sentence encoders and their assembly models, \ie W2VV++ and the proposed \emph{SEA}, on MSR-VTT and TRECVID}. Numbers are shown in percentages, with top performers highlighted in \best{bold} font. For a given setup of sentence encoders, relative improvement of SEA over its W2VV++ counterpart is given in parentheses, showing that SEA is consistently better.}
+    \caption[在MSR-VTT和TRECVID上联合评测基础模型W2VV和本文提出的W2VV++模型和SEA模型]{\textbf{在MSR-VTT和TRECVID上联合评测基础模型W2VV和本文提出的W2VV++模型和SEA模型}。评价指标除了排序中位数Med r均以百分数的形式显示（\%），其中最好的结果用\best{粗体}标出。对于给定的视频特征，本文提出的W2VV++模型和SEA模型都比基础模型W2VV的效果明显好，而SEA模型在这两个数据上的整体效果都是最好的。}
 \label{tab:tee_vs_w2vvpp}
-\scalebox{0.75}{
+\scalebox{0.73}{
 \begin{tabular}{@{}|l | l | r | r | r | r | l|| r | r | r | r | l|@{}}
 \hline
 \multirow{2}{*}{\textbf{模型}} & \multirow{2}{*}{\textbf{视频特征}} & \multicolumn{5}{c||}{\textbf{MSR-VTT} (test-full)} & \multicolumn{5}{c|}{\textbf{TRECVID} (指标: infAP)}  \\
@@ -14,19 +14,28 @@
  & & \textit{R@1} & \textit{R@5} & \textit{R@10} & \textit{Med r} & \textit{mAP} & \textit{TV16} & \textit{TV17} & \textit{TV18} & \textit{TV19} & \textit{AVG}  \\
 
 \hline
-\multirow{3}{*}{W2VV++} & $ResNet$ &  &  &  &  & & & & & & \\
+\multirow{3}{*}{W2VV} & $ResNet$ & 1.4 & 5.5 & 9.4 & 221 & \textcolor{white}{0}4.3 & 1.2 & 1.7 & 0.2 & 0.5 & \textcolor{white}{0}0.9 \\
 
 \cline{2-12}
- & $ResNeXt$ &  & & & & & 14.0 & 17.1 & 10.3 & & \\
+& $ResNeXt$ & 0.8 & 3.9 & 6.7 & 266 & \textcolor{white}{0}3.1 & 0.9 & 0.5 & 0.2 & 0.1 & \textcolor{white}{0}0.4 \\
 
 \cline{2-12}   
- & $ResNeXt$-$ResNet$ & 11.1 & 29.6 & 40.5 & 18 & 20.6  & 16.2 & 22.3 & 10.1 & 13.9 & 15.6 \\
+& $ResNeXt$-$ResNet$ & 1.1 & 4.7 & 8.0 & 240 & \textcolor{white}{0}3.7 & 1.3 & 0.8 & 0.4 & 0.2 & \textcolor{white}{0}0.7 \\
 
 \hline
-\multirow{3}{*}{SEA} & $ResNet$ & & & & & & & & & & \\
+\multirow{3}{*}{W2VV++} & $ResNet$ & 9.9 & 27.1 & 37.4 & 22 & 18.8 & 14.5 & 18.8 & 8.6 & 10.7 & 13.2 \\
 
 \cline{2-12}
- & $ResNeXt$ & & & & & & & & & & \\
+ & $ResNeXt$ & 10.6 & 28.5 & 39.1 & 20 & 19.8 & 14.0 & 21.5 & 10.6 & 14.0 & 15.0 \\
+
+\cline{2-12}   
+& $ResNeXt$-$ResNet$ & 11.1 & 29.6 & 40.5 & 18 & 20.6  & \best{16.2} & 22.3 & 10.1 & 13.9 & 15.6 \\
+
+\hline
+\multirow{3}{*}{SEA} & $ResNet$ & 11.1 & 29.3 & 40.3 & 18 & 20.5 & 13.8 & 20.0 & 10.0 & 12.9 & 14.2 \\
+
+\cline{2-12}
+ & $ResNeXt$ & 11.6 & 30.4 & 41.5 & 17 & 21.2 & 14.6 & 22.8 & 12.0 & 15.1 & 16.1 \\
 
 \cline{2-12}
     & $ResNeXt$-$ResNet$ & \best{12.2} & \best{31.9} & \best{43.1} & \best{15} & \best{22.1} & 15.0 & \best{23.4} & \best{12.2} & \best{16.6} & \best{16.8} \\

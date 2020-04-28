@@ -6,31 +6,31 @@
 \normalsize
 \renewcommand\arraystretch{1.2}
 \centering
-\caption{\textbf{State-of-the-art on the TRECVID Ad-hoc video search (AVS) benchmarks}. \tea(\{bow, w2v\}) surpasses the prior art, while Dual Encoding + \tea, which is late average fusion of the two models, boosts the performance further.}
+\caption[在TRECVID即席视频检索任务上的先进算法比较]{\textbf{在TRECVID即席视频检索任务上的先进算法比较}。 本文提出的SEA算法超过了之前的检索算法，是目前在TRECVID即席视频检索任务上性能最好的算法。}
 \label{tab:sota-tv}
-\scalebox{0.85}{
+\scalebox{0.9}{
 \begin{tabular}{@{}|l | l | l | l | l | c| @{}}
 \hline
-\textbf{Model} & \textbf{TV16} & \textbf{TV17} & \textbf{TV18} & \textbf{TV19} & \textbf{SUM} \\
+\textbf{Model} & \textbf{TV16} & \textbf{TV17} & \textbf{TV18} & \textbf{TV19} & \textbf{AVG} \\
 \hline 
-\multicolumn{6}{|l|}{Top-3 TRECVID finalists:}  \\
+\multicolumn{6}{|l|}{TRECVID 前三名:}  \\
 \cline{2-6}
-Rank 1 & \textcolor{white}{0}5.4~\cite{tv16-nii} & 20.6~\cite{tv17-uva} & 12.1~\cite{tv18-rucmm} & 16.3~\cite{tv19-alibaba} & n.a. \\ 
-Rank 2 & \textcolor{white}{0}5.1~\cite{tv16-certh} & 15.9~\cite{tv17-waseda} & \textcolor{white}{0}8.7~\cite{tv18-inf} & 16.0~\cite{tv19-rucmm} & n.a.\\
-Rank 3 & \textcolor{white}{0}4.0~\cite{tv16-inf} & 12.0~\cite{tv17-vireo} &  \textcolor{white}{0}8.2~\cite{tv18-ntu} & 12.3~\cite{tv19-waseda} & n.a.\\
+第一名 & \textcolor{white}{0}5.4~\cite{le2016nii} & 20.6~\cite{snoek2017university} & 12.1~\cite{li2018renmin} & 16.3~\cite{wu2019hybrid} & n.a. \\ 
+第二名 & \textcolor{white}{0}5.1~\cite{foteini2016iti} & 15.9~\cite{ueki2017waseda} & \textcolor{white}{0}8.7~\cite{huang2018informedia} & 16.0~\cite{li2019renmin} & n.a.\\
+第三名 & \textcolor{white}{0}4.0~\cite{liang2016inf} & 12.0~\cite{nguyen2017vireo} &  \textcolor{white}{0}8.2~\cite{bastan2018ntu} & 12.3~\cite{ueki2019waseda} & n.a.\\
 \hline
-VideoStory~\cite{habibian-pami17} & \textcolor{white}{0}8.7 & 15.0 & n.a. & n.a. & n.a. \\
+VideoStory~\cite{habibian2017video2vec} & \textcolor{white}{0}8.7 & 15.0 & n.a. & n.a. & n.a. \\
 \hline
-VSE++~\cite{vsepp} & 13.5 & 16.3  & 10.6 & \textcolor{white}{0}9.8  & 50.2\\ 
+VSE++~\cite{faghri2017vse++} & 13.5 & 16.3  & 10.6 & \textcolor{white}{0}9.8  & 12.6 \\ 
 \hline
-W2VV++~\cite{w2vvpp} & 16.2 & 22.3 & 10.1 & 13.9 & 62.5   \\
+Dual Encoding~\cite{dong2019dual} & \best{16.5} & 22.8 & 11.7 & 15.2 & 16.6 \\
 \hline
-Dual Encoding~\cite{dong-cvpr19} & 16.5 & 22.8 & 11.7 & 15.2 & 65.6 \\
+W2VV++ & 16.2 & 22.3 & 10.1 & 13.9 & 15.6   \\
 \hline
-\tea  & 15.7 & 23.4 & \best{12.8}  & 16.6 & 68.5\\
+\tea  & 15.0 & \best{23.4} & \best{12.2}  & \best{16.6} & \best{16.8} \\
 \hline 
-Dual Encoding + \tea & \best{17.3} & \best{25.0} & \best{12.8} & \best{17.1} & \best{72.2} \\
-\hline
+%Dual Encoding + \tea & \best{17.3} & \best{25.0} & \best{12.8} & \best{17.1} & \best{72.2} \\
+%\hline
 \end{tabular}
 }
 \end{table}

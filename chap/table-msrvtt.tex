@@ -4,34 +4,35 @@
 \normalsize
 \renewcommand\arraystretch{1.2}
 \centering
-\caption{\textbf{State-of-the-art on MSR-VTT for text-based video retrieval}. All numbers are from the cited papers except for \cite{vsepp,dong-cvpr19,w2vvpp}, which are re-trained using their code with the same resnext-resnet feature as used in this work. On both the \textit{test-1k} set and the \textit{full} test set, our proposed \textit{SEA}(\{bow, w2v, GRU, BERT\}) is the best.}
+    \caption[在MSR-VTT上目前先进的基于文本的视频检索算法]{\textbf{在MSR-VTT上目前先进的基于文本的视频检索算法}。 这些先进的算法都是从原论文引用，除了VSE++~\cite{faghri2017vse++}和Dual Encoding~\cite{dong2019dual}这两个算法是使用他们公开的源代码并用与本文实验相同的$ResNeXt$-$ResNet$视频特征重新训练，在test-1k测试集上，本文提出的SEA算法在R@1上最好，而在R@5,R@10 和 Med r 三个指标上与 CE~\cite{liu2019use}算法相当，而在完整的测试集test-full上本文提出的W2VV++和SEA算法都超过了这些先进算法，其中 SEA 模型在所有指标都是表现最好的。}
 \label{tab:sota-msrvtt}
 \scalebox{0.9}{
 \begin{tabular}{@{}|l |l | r | r | r | r | r|@{}}
 \hline
-\specialcell{\textbf{Test}\\\textbf{set}} & \textbf{Model} & \textbf{R@1} & \textbf{R@5} & \textbf{R@10} & \specialcell{\textbf{Med}\\\textbf{r}} & \textbf{mAP} \\
+\textbf{测试集} & \textbf{模型} & \textbf{R@1} & \textbf{R@5} & \textbf{R@10} & \textbf{Med r} & \textbf{mAP} \\
 \hline
-\multirow{4}{*}{\specialcell{\textit{1k}\\\cite{yu-eccv18}}} & JSFusion~\cite{yu-eccv18} & 10.2 & 31.2 & 43.2 & 13 & n.a. \\
+\multirow{4}{*}{\textit{test-1k}~\cite{yu2018a}} & JSFusion~\cite{yu2018a} & 10.2 & 31.2 & 43.2 & 13 & n.a. \\
 \cline{2-7}
 %& Miech \etal~\cite{miech-iccv19} & 12.1 & 35.0 &  48.0 & 12 & n.a. \\
-& VSE++~\cite{vsepp} & 15.2	& 37.7 & 50.1 & 10 & 26.0 \\
+& VSE++~\cite{faghri2017vse++} & 15.2	& 37.7 & 50.1 & 10 & 26.0 \\
 \cline{2-7}
-& Miech \etal~\cite{miech-iccv19} &14.9 & 40.2 &  52.8 & 9  & n.a. \\
+& Miech \etal~\cite{miech2019howto100m} &14.9 & 40.2 &  52.8 & 9  & n.a. \\
 \cline{2-7}
 & UniViLM~\cite{luo2020univilm} & 15.4 & 39.5 & 52.3 & 9 & n.a. \\
 \cline{2-7}
-& Dual Encoding~\cite{dong-cvpr19} & 18.8 & 44.4 & 57.2 & 7 &31.6 \\
+& Dual Encoding~\cite{dong2019dual} & 18.8 & 44.4 & 57.2 & 7 &31.6 \\
 \cline{2-7}
-& W2VV++~\cite{w2vvpp} & 18.9 & 45.3 & 57.5 & 8 & 31.6 \\
+& CE~\cite{liu2019use}  & 20.9 & \best{48.8} & \best{62.4} & \best{6} & n.a. \\
 \cline{2-7}
-& CE~\cite{liu-bmvc19}  & 20.9 & 48.8 & \best{62.4} & 6 & n.a. \\
+& \multicolumn{6}{l|}{本文提出的模型：} \\
 \cline{2-7}
-%& \textit{TEE}~(bow,w2v,BERT) & \textbf{22.9} & \textbf{50.4} & \textbf{63.2}	& \textbf{5} & \textbf{35.8} \\
-& \tea & \best{23.7} & \best{50.1} & \best{62.4} & \best{5}	& \best{36.2} \\ 
+& W2VV++ & 18.9 & 45.3 & 57.5 & 8 & 31.6 \\
+\cline{2-7}
+& \tea & \best{22.1} & 48.6 & 62.3 & \best{6}	& \best{34.9} \\ 
 
 \hline
 \hline
-\multirow{5}{*}{\textit{Full}} & Mithun \etal~\cite{mithun-icmr18} & 7.0 & 20.9 & 29.7 & 38 & n.a. \\
+\multirow{5}{*}{\textit{test-full}} & Mithun \etal~\cite{mithun2018learning} & 7.0 & 20.9 & 29.7 & 38 & n.a. \\
 \cline{2-7}
 & VSE++ & 8.7 & 24.3 & 34.1  & 28 & 16.9 \\
 \cline{2-7}
@@ -39,10 +40,11 @@
 \cline{2-7}
 & Dual Encoding & 11.1 & 29.4 & 40.3 & 19 & 20.5 \\
 \cline{2-7}
+& \multicolumn{6}{l|}{本文提出的模型：} \\
+\cline{2-7}
 & W2VV++ & 11.1 & 29.6 & 40.5 &	18	& 20.6 \\
 \cline{2-7}
-%& \emph{TEE}~(bow,w2v,BERT)  & \textbf{12.8} & \textbf{33.1} & \textbf{44.6} & \textbf{14} & \textbf{23.0} \\ 
-& \tea & \best{13.0} & \best{33.6} & \best{44.9} & \best{14}	& \best{23.3} \\
+& \tea & \best{12.2} & \best{31.9} & \best{43.1} & \best{15} & \best{22.1} \\
 \hline
 \end{tabular}
 }

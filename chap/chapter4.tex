@@ -16,12 +16,12 @@
 
 \input{chap/table-data}
 
-\subsection{MSR-VTT 实验设置}
+\subsection{MSR-VTT 实验设置} \label{ssec:setup-msrvtt}
 \textbf{数据划分}：本文根据MSR-VTT数据官方的数据划分，共分为三个没有交集的子集作为训练集、验证集和测试集，其中训练数据包含6,513个视频，130,260个句子描述，而验证集包含497个视频，9,940个句子描述作为查询，测试集包含2,990个视频，59,800个句子描述作为查询。而在文献~\cite{}中，这些工作在原来的测试集里随机采样了1,000个视频作为一个更小的测试集，而查询句子也进行了随机采样得到1,000个句子，每个视频对应一个句子描述。本文为了与这些工作进行公平的比较，也使用了这个更小的测试集，命名为\textit{test-1k}，而原来的完整测试集命名为\textit{test-full}。
 
-\textbf{性能指标}：根据之前的工作~\cite{}，本文在MSR-VTT实验报告的指标为R@k, k=1,5,10，表示测试查询样例在前k个查询结果中至少有一个相关视频的百分比，排序中位数（Median rank, Med r），表示在查询结果中第一个相关视频的排序的中位数，和平均精度均值（Mean Average Precision, mAP）作为模型整体性能的指标，在验证集上也是使用mAP作为选择最优模型的指标。
+\textbf{性能指标}：根据之前的工作~\cite{}，本文在MSR-VTT实验报告的指标为R@k, k=1,5,10，表示测试查询样例在前k个查询结果中至少有一个相关视频的百分比，该值越大模型效果越好，排序中位数（Median rank, Med r），表示在查询结果中第一个相关视频的排序的中位数，该值越小模型效果越好，和平均精度均值（Mean Average Precision, mAP）作为模型整体性能的指标，在验证集上也是使用mAP作为选择最优模型的指标。
 
-\subsection{TRECVID 实验设置}
+\subsection{TRECVID 实验设置} \label{ssec:setup-tv}
 
 \textbf{训练集}：如表格~\ref{tab:datasets}所示，本文的TRECVID实验使用MSR-VTT~\cite{msrvtt}和TGIF~\cite{li2016tgif}两个数据结合作为训练集。MSR-VTT数据包含1万个网络视频片段和20万个描述视频片段内容的句子，即每个视频片段有20个描述句子。
 本文每段MSR-VTT的视频每半秒提取一帧的频率进行均匀采样，共生成305,462张帧图像。而TGIF数据包含超过10万张动图和12万个描述动图内容的句子，本文同样对每个动图进行均匀采样，共生成1,045,268张帧图像。
@@ -36,39 +36,50 @@
 例如“Find shots of palm trees”，“Find shots of a man with beard and wearing white robe speaking and gesturing to camera”和
 “Find shots of a truck standing still while a person is walking beside or in front of it”。所有的查询均以“Find shots of”的短语开头，因此在测试时可以很容易地去掉而关注查询的主体部分。
 
-\textbf{性能指标}：本文使用TRECVID AVS任务的官方评测指标，推测平均准确率(inferred average precision, infAP)~\cite{awad2016trecvid,awad2017trecvid,awad2018trecvid,awad2019trecvid}作为模型的评价指标，而模型的总体性能是所有测试查询样例的infAP分数的平均值，该值越高，模型的视频检索效果越好。
+\textbf{性能指标}：本文使用TRECVID AVS任务的官方评测指标，推测平均准确率(inferred average precision, infAP)~\cite{awad2016trecvid,awad2017trecvid,awad2018trecvid,awad2019trecvid}作为模型的评价指标，而模型的总体性能是所有测试查询样例的infAP分数的平均值，该值越高，模型的视频检索效果越好，本文以2016-2019年的infAP的平均值（AVG）作为模型在TRECVID上的整体性能。
 
 
 \section{实验结果}
 本文从消融实验和与先进方法的比较实验两个方面验证本文提出的W2VV++模型和SEA模型的有效性，消融实验可以验证不同模块对于模型的作用，从而验证本文提出的对于特定模块的改进的有效性，与目前的先进方法进行比较实验可以验证本文所提出的算法模型在即席视频检索领域具有优越性。
 
 \subsection{消融实验}
-\textbf{视频特征的选择}：本文比较了三种特征的选择，即$ResNeXt$，$ResNet$和$ResNeXt$-$ResNet$，分别表示ResNext-101特征，ResNet-152特征和这两个特征的拼接组成的特征。如表格~\ref{tab:tee_vs_w2vvpp}所示，
+\textbf{视频特征的选择}：本文比较了三种特征的选择，即$ResNeXt$，$ResNet$和$ResNeXt$-$ResNet$，分别表示ResNeXt-101特征，ResNet-152特征和这两个特征的拼接组成的特征。如表格~\ref{tab:tee_vs_w2vvpp}所示，对于模型W2VV++和SEA，使用ResNeXt-101的视频的特征比使用ResNet-152的效果好，而使用这两个特征拼接组成的$ResNeXt$-$ResNet$视频特征可以进一步提高这两个模型的性能。对于相同的视频特征，本文提出的W2VV++模型和SEA模型都比基础模型W2VV的效果好，其中SEA模型的效果最好。本文接下来的实验均以拼接的特征$ResNeXt$-$ResNet$进行实验，除非特别说明。
 
 \input{chap/table-tee-vs-w2vvpp}
 
-
-\textbf{目标函数和GRU编码}：
+\textbf{目标函数}：本文提出的W2VV++模型在W2VV模型的基础上对目标函数和GRU编码器的使用做了改进，即使用ITRL目标函数替换原来的均方误差（MSE）目标函数，使用GRU输出的所有隐藏层状态的平均替换原来的只取GRU输出的最后时刻的隐藏层状态。如表格~\ref{tab:loss_fusion}前三行所示，W2VV$_ITRL$表示在模型W2VV的基础上只将ITRL替换MSE，由结果可以看出，使用ITRL目标函数可以大幅提高基于文本的视频检索模型的性能，而本文提出的W2VV++可以进一步提高视频检索的效果。对于SEA的目标函数选择，本文已经在图~\ref{fig:negative-examples}定性地分析了多目标函数（combined loss）融合文本编码器的比单目标函数（single loss）的方式更好，本文通过实验进一步验证了这个结论。如表格~\ref{tab:loss_fusion}的最后两行显示，在两个数据集上，多目标函数的方式都比单目标函数的方式的效果好。
 
 \input{chap/table-w2vvpp}
 
+\textbf{文本编码器融合}：因为单个的文本编码器的输出维度差异很大，从500维（$e_{w2v}$）到多达一万多维（$e_{bow}$），像W2VV模型和本文提出的W2VV++模型直接简单地拼接这些文本编码器的方法不一定是最优的，而本文继续实现了两种融合方法，从而验证本文的提出的SEA模型可以更加有效地利用多个文本编码器：\\
+$\bullet$ Transformed W2VV++：本文使用只有一层全连接层和激活层转换网络对W2VV++的每个编码器进行转换，使得每个编码器输出的句子向量的维度都是2048维，然后再融合这些转换后的编码器向量组成句子的向量化表示，然后再用转换网络把句子向量投影投公共空间。这种方式可以在编码器拼接时每个句子编码向量的维度一样。同样，这种方式也是通过端到端地对模型进行训练。  \\
+$\bullet$ 模型平均后融合（Model averaging）：先使用W2VV++模型对每个编码器单独训练好一个独立的模型，本文使用三个不同的文本编码器，因此会有三个独立的模型， 然后查询句子与视频的跨模态相似度由在这三个模型分别计算的跨模态相似度取平均得到。
 
-\textbf{句子编码器融合}：
-
-\input{chap/table-fusion}
-
-\textbf{SEA Combined loss versus single loss}：
+如表格~\ref{tab:loss_fusion}所示，Transformed W2VV++模型相对于W2VV++的效果更差了，说明了对文本编码器输出的句子向量做维度的变化会导致编码器输出的信息丢失，而Model averaging的效果比W2VV++的效果更好，进一步说明了为多个编码器学习多个公共空间的比单个公共空间的更好，但Model averaging的效果不如本文提出的多空间多目标函数SEA模型，说明了在同一个模型里学习多空间是更优的方式。
 
 
 \subsection{与先进方法的比较实验}
+本文在MSR-VTT和TRECVID两个基准线都与当前的先进的视频检索算法进行了比较。
 
-本文与当前在视频检索领域先进的方法进行了公平的比较。
+\textbf{在MSR-VTT上的先进方法} 。本文和下列的六个当前先进的算法模型进行了对比，分别是只在test-1k测试集上评测的算法~\cite{miech2019howto100m,yu2018a}和只在整个测试集test-full上评测的算法~\cite{mithun2018learning}，以及在这两个测试集上评测的算法~\cite{dong2019dual,faghri2017vse++,liu2019use}。本文下面突出介绍这些算法所使用的文本编码器：\\
+$\bullet$ JSFusion~\cite{yu2018a}： 使用双向的长短期记忆网络（bi-LSTM）作为文本编码器。 \\
+$\bullet$ VSE++~\cite{faghri2017vse++}: 使用GRU作为文本编码器。 \\
+$\bullet$ Mithun \etal~\cite{mithun2018learning}: 使用GRU作为文本编码器。 \\
+$\bullet$ Miech \etal~\cite{miech2019howto100m}: 使用一维卷积神经网络（1D-CNN）作为文本编码器。 \\
+$\bullet$ Dual Encoding~\cite{dong2019dual}: 在文本端和视频端同时使用多层对偶的编码策略。\\
+$\bullet$ CE~\cite{liu2019use}: 使用 NetVLAD 作为文本编码器。\\
+这些算法除了~\cite{miech2019howto100m}，都在MSR-VTT的官方训练数据上进行模型的训练，而~\cite{miech2019howto100m}先在1亿的视频里进行预训练，然后在MSR-VTT数据上对模型进行微调。
 
-\textbf{在MSR-VTT上的先进方法} 
+本文在表格~\ref{tab:sota-msrvtt}展示了目前在MSR-VTT上完整的测试集test-full和test-1k上的先进算法的结果。为了方便对比，这些算法的结果直接从原始的论文中引用，除了VSE++~\footnote{\url{https://github.com/fartashf/vsepp}}和Dual Encoding~\footnote{\url{https://github.com/danieljf24/dual_encoding}}这两个算法，本文使用作者公开的代码并用本文所使用的视频特征$ResNeXt$-$ResNet$对模型进行了重新训练。在这些先进的算法中，CE模型在test-1k上的表现最好，而在完整测试集test-full上，Dual Encoding模型的效果最好。在test-1k上，本文提出了SEA算法模型在R@1上最好，而在R@5，R@10和Med r三个指标上与最好的CE模型相当。而在完整的测试集test-full上，本文提出的W2VV++模型和SEA模型均超过了这些先进方法，其中SEA模型在所有指标都是表现最好的。考虑到效果较好的CE模型使用了物体特征、场景特征、动作特征、人脸特征、字符特征、言语特征和音频特征来表示视频，而我们仅使用了物体特征，显然本文提出的算法模型更有优势。
 
 \input{chap/table-msrvtt}
 
-\textbf{在TRECVID AVS上的先进方法}
+\textbf{在TRECVID AVS上的先进方法}。本文与在每年TRECVID AVS评测中前三的算法进行比较，并且本文还与VSE++和Dual Encoding这两个算法进行对比实验，这两个算法经过如第\ref{ssec:setup-tv}节的描述进行了重新训练，本文还与使用了bow作为文本编码器的VideoStory算法~\cite{habibian2017video2vec}进行了对比。
+
+本文在表格~\ref{tab:sota-tv}展示了2016年至2019年在TRECVID上即席视频检索算法的性能。本文提出的SEA算法在TRECVID上的整体效果最好。考虑到之前在TRECVID评测上效果最好的模型都使用了对很多单模型进行平均后融合操作~\cite{snoek2017university,li2018renmin,wu2019hybrid}，有的甚至用接近100个单模型~\cite{ueki2019waseda}，而本文提出的SEA算法仅使用一个单模型就达到了目前最好的性能，这在即席视频检索领域是很大的一次改进。
 
 \input{chap/table-tv}
+
+
+\section{即席视频检索结果展示}
 
