@@ -27,6 +27,11 @@ linkcolor=black
 \newcommand{\best}[1]{\textcolor{blue}{\textbf{#1}}}
 \newcommand{\tea}{\textit{SEA~}}
 
+\def\achievementsign{攻读硕士学位期间的科研成果}
+\newenvironment{achievement}
+{\chapter*{\achievementsign}\vspace*{-5mm}
+\addcontentsline{toc}{chapter}{\achievementsign}\zihao{-4}\rm}
+
 \newcommand{\ie}{\emph{i.e.,~}}
 \newcommand{\etal}{\emph{et al.~}}
 \newcommand{\eg}{\emph{e.g.,~}}
@@ -56,7 +61,7 @@ linkcolor=black
 \field{\ 计算机应用技术}%专业
 \studentid{2017104074}%学号
 \advisor{李锡荣}%指导老师
-\date{2020年3月17日}
+\date{}
 %以下本科填写
 \grade{}%年级
 \score{4.0}%成绩
@@ -64,10 +69,11 @@ linkcolor=black
 %\subtitle{------20天打虎从入门到精通}%论文副题名
 %以下研究生填写
 \etitle{Ad-hoc Video Search Based on Deep Learning}%英文题目
-\keywords{\TeX{}}%论文主题词
+\keywords{深度学习；即席视频检索；句子编码器；目标函数；多空间学习}%论文主题词
 %摘要关键词
-\keywordzh{中文摘要关键词}%中文摘要关键词
-\keyworden{English\qquad template}%英文摘要关键词
+\keywordzh{深度学习，即席视频检索，句子编码器，目标函数，多空间学习}%中文摘要关键词
+%\keyworden{English\qquad template}%英文摘要关键词
+\keyworden{Deep Learning, Ad-hoc Video Search, Sentence Encoder, Loss Function, Multi-space Learning}%英文摘要关键词
 
 %
 \begin{document}
@@ -78,7 +84,7 @@ linkcolor=black
 %独创性声明
 \originality
 %授权书在这插入
-\authorization{figures/shouquan.png}
+%\authorization{figures/shouquan.png}
 %中文摘要
 \include{format/cabstractpage}
 %英文摘要
@@ -103,6 +109,7 @@ linkcolor=black
 \include{chap/chapter2}
 \include{chap/chapter3}
 \input{chap/chapter4}%要插入本科签名的最后一个章节,插入命令使用\input{}
+\include{chap/chapter5}
 
 %本科签名
 %\autograph
@@ -122,6 +129,7 @@ linkcolor=black
 %致谢
 \include{format/acknowledge}
 
+\include{chap/achievement}
 
 
 \end{document}  
