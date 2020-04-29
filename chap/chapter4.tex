@@ -17,9 +17,9 @@
 \input{chap/table-data}
 
 \subsection{MSR-VTT 实验设置} \label{ssec:setup-msrvtt}
-\textbf{数据划分}：本文根据MSR-VTT数据官方的数据划分，共分为三个没有交集的子集作为训练集、验证集和测试集，其中训练数据包含6,513个视频，130,260个句子描述，而验证集包含497个视频，9,940个句子描述作为查询，测试集包含2,990个视频，59,800个句子描述作为查询。而在文献~\cite{}中，这些工作在原来的测试集里随机采样了1,000个视频作为一个更小的测试集，而查询句子也进行了随机采样得到1,000个句子，每个视频对应一个句子描述。本文为了与这些工作进行公平的比较，也使用了这个更小的测试集，命名为\textit{test-1k}，而原来的完整测试集命名为\textit{test-full}。
+\textbf{数据划分}：本文根据MSR-VTT数据官方的数据划分，共分为三个没有交集的子集作为训练集、验证集和测试集，其中训练数据包含6,513个视频，130,260个句子描述，而验证集包含497个视频，9,940个句子描述作为查询，测试集包含2,990个视频，59,800个句子描述作为查询。而在文献~\cite{liu2019use,miech2019howto100m,yu2018a}中，这些工作在原来的测试集里随机采样了1,000个视频作为一个更小的测试集，而查询句子也进行了随机采样得到1,000个句子，每个视频对应一个句子描述。本文为了与这些工作进行公平的比较，也使用了这个更小的测试集，命名为\textit{test-1k}，而原来的完整测试集命名为\textit{test-full}。
 
-\textbf{性能指标}：根据之前的工作~\cite{}，本文在MSR-VTT实验报告的指标为R@k, k=1,5,10，表示测试查询样例在前k个查询结果中至少有一个相关视频的百分比，该值越大模型效果越好，排序中位数（Median rank, Med r），表示在查询结果中第一个相关视频的排序的中位数，该值越小模型效果越好，和平均精度均值（Mean Average Precision, mAP）作为模型整体性能的指标，在验证集上也是使用mAP作为选择最优模型的指标。
+\textbf{性能指标}：根据之前的工作~\cite{dong2019dual,mithun2018learning}，本文在MSR-VTT实验报告的指标为R@k, k=1,5,10，表示测试查询样例在前k个查询结果中至少有一个相关视频的百分比，该值越大模型效果越好，排序中位数（Median rank, Med r），表示在查询结果中第一个相关视频的排序的中位数，该值越小模型效果越好，和平均精度均值（Mean Average Precision, mAP）作为模型整体性能的指标，在验证集上也是使用mAP作为选择最优模型的指标。
 
 \subsection{TRECVID 实验设置} \label{ssec:setup-tv}
 
@@ -47,7 +47,7 @@
 
 \input{chap/table-tee-vs-w2vvpp}
 
-\textbf{目标函数}：本文提出的W2VV++模型在W2VV模型的基础上对目标函数和GRU编码器的使用做了改进，即使用ITRL目标函数替换原来的均方误差（MSE）目标函数，使用GRU输出的所有隐藏层状态的平均替换原来的只取GRU输出的最后时刻的隐藏层状态。如表格~\ref{tab:loss_fusion}前三行所示，W2VV$_ITRL$表示在模型W2VV的基础上只将ITRL替换MSE，由结果可以看出，使用ITRL目标函数可以大幅提高基于文本的视频检索模型的性能，而本文提出的W2VV++可以进一步提高视频检索的效果。对于SEA的目标函数选择，本文已经在图~\ref{fig:negative-examples}定性地分析了多目标函数（combined loss）融合文本编码器的比单目标函数（single loss）的方式更好，本文通过实验进一步验证了这个结论。如表格~\ref{tab:loss_fusion}的最后两行显示，在两个数据集上，多目标函数的方式都比单目标函数的方式的效果好。
+\textbf{目标函数}：本文提出的W2VV++模型在W2VV模型的基础上对目标函数和GRU编码器的使用做了改进，即使用ITRL目标函数替换原来的均方误差（MSE）目标函数，使用GRU输出的所有隐藏层状态的平均替换原来的只取GRU输出的最后时刻的隐藏层状态。如表格~\ref{tab:loss_fusion}前三行所示，W2VV$_{ITRL}$表示在模型W2VV的基础上只将ITRL替换MSE，由结果可以看出，使用ITRL目标函数可以大幅提高基于文本的视频检索模型的性能，而本文提出的W2VV++可以进一步提高视频检索的效果。对于SEA的目标函数选择，本文已经在图~\ref{fig:negative-examples}定性地分析了多目标函数（combined loss）融合文本编码器的比单目标函数（single loss）的方式更好，本文通过实验进一步验证了这个结论。如表格~\ref{tab:loss_fusion}的最后两行显示，在两个数据集上，多目标函数的方式都比单目标函数的方式的效果好。
 
 \input{chap/table-w2vvpp}
 
@@ -64,8 +64,8 @@ $\bullet$ 模型平均后融合（Model averaging）：先使用W2VV++模型对�
 \textbf{在MSR-VTT上的先进方法} 。本文和下列的六个当前先进的算法模型进行了对比，分别是只在test-1k测试集上评测的算法~\cite{miech2019howto100m,yu2018a}和只在整个测试集test-full上评测的算法~\cite{mithun2018learning}，以及在这两个测试集上评测的算法~\cite{dong2019dual,faghri2017vse++,liu2019use}。本文下面突出介绍这些算法所使用的文本编码器：\\
 $\bullet$ JSFusion~\cite{yu2018a}： 使用双向的长短期记忆网络（bi-LSTM）作为文本编码器。 \\
 $\bullet$ VSE++~\cite{faghri2017vse++}: 使用GRU作为文本编码器。 \\
-$\bullet$ Mithun \etal~\cite{mithun2018learning}: 使用GRU作为文本编码器。 \\
-$\bullet$ Miech \etal~\cite{miech2019howto100m}: 使用一维卷积神经网络（1D-CNN）作为文本编码器。 \\
+$\bullet$ Mithun 等人~\cite{mithun2018learning}: 使用GRU作为文本编码器。 \\
+$\bullet$ Miech 等人~\cite{miech2019howto100m}: 使用一维卷积神经网络（1D-CNN）作为文本编码器。 \\
 $\bullet$ Dual Encoding~\cite{dong2019dual}: 在文本端和视频端同时使用多层对偶的编码策略。\\
 $\bullet$ CE~\cite{liu2019use}: 使用 NetVLAD 作为文本编码器。\\
 这些算法除了~\cite{miech2019howto100m}，都在MSR-VTT的官方训练数据上进行模型的训练，而~\cite{miech2019howto100m}先在1亿的视频里进行预训练，然后在MSR-VTT数据上对模型进行微调。
@@ -82,4 +82,8 @@ $\bullet$ CE~\cite{liu2019use}: 使用 NetVLAD 作为文本编码器。\\
 
 
 \section{即席视频检索结果展示}
+
+
+\section{本章小结}
+在本章，我们详细地在两个公开的数据集MSR-VTT~\cite{msrvtt}和TRECVID AVS任务数据集~\cite{awad2016trecvid}上评测了在本文提出的W2VV++算法模型和SEA算法模型的有效性。本文提出的W2VV++算法在原来的W2VV算法~\cite{dong2018predicting}的基础上进行了改进，即使用了ITRL目标函数替换原来的MSE函数，使用GRU编码器输出的所有隐藏层状态的平均，而不仅是使用GRU编码器最后时刻的输出状态，通过消融实验证明了这两个改进在即席视频检索上都是有效的，而使用ITRL目标函数提高的效果最明显。本文提出的的SEA算法在W2VV++的基础上使用多空间多目标函数的方式融合多个文本编码器，通过消融实验验证了这种多空间多目标函数的方式可以非常有效地融合不同的文本编码器。通过与目前在视频检索上先进的算法进行对比，证明了W2VV++算法和SEA算法具有很大的优越性，其中单模型的SEA在TRECVID上进行评测的通过多个模型后融合的方法取得的结果，这在即席视频检索上是一个很大的进步。
 
