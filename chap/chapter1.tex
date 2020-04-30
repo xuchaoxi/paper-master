@@ -33,22 +33,22 @@
 \end{figure*}
 
 %随着深度学习的提出~\cite{hinton2006a}，
-在ImageNet图像识别大赛中~\cite{deng2009imagenet}，Hinton等人在文献~\cite{krizhevsky2012imagenet}提出的深度卷积网络Alexnet把图像识别错误率从原来的25.7\%提升到15.3\%，极大地推动了深度学习模型的发展，而后一系列的网络层数更深的深度卷积网络VGGNet~\cite{simonyan2014very}，
-GoogLeNet~\cite{szegedy2015going}，ResNet~\cite{he2016deep}将图像识别错误率逐步提升到3.57\%，超越了人类的图像识别错误率。
+在ImageNet图像识别大赛中~\cite{deng2009imagenet}，Hinton等人在文献~\cite{krizhevsky2012imagenet}提出的深度卷积网络Alexnet把图像识别错误率从原来的25.7\%降低到15.3\%，极大地推动了深度学习模型的发展，而后一系列的网络层数更深的深度卷积网络VGGNet~\cite{simonyan2014very}，
+GoogLeNet~\cite{szegedy2015going}，ResNet~\cite{he2016deep}将图像识别错误率逐步降低到3.57\%，超越了人类的图像识别错误率。
 深度学习模型在图像领域的巨大成功，深度学习的方法也被拓展到视频识别领域。考虑到视频比图像而言不仅具有空间信息，也具有时序信息，Simonyan等人在文献~\cite{simonyan2014two}提出双流的深度卷积网络来处理视频的动作识别任务，同时以视频的帧图像和光流信息作为深度卷积网络的输入，证明了深度学习模型在视频动作识别领域比传统的基于人工的特征，如方向梯度直方图（Histogram of Oriented Gradient，HOG）和光流直方图（Histogram of Optical Flow，HOF）的效果相当。因为视频有时序性的特定，后来Du等人在文献~\cite{tran2015learning}上基于图像上的二维卷积核的基础推广到视频上的三维的卷积核，提出C3D深度卷积网络，学习视频的时空特征，提升深度学习方法在视频分类的效果。后来Joao等人在
 C3D网络的基础上提出双流的深度卷积网络I3D~\cite{carreira2017quo}，同时使用帧图像和光流作为输入，进一步提升了视频分类的准确率。深度学习模型同样成功地应用在自然语言处理上，例如Tomas等人提出词向量的分布式表达（Distributed representation）的word2vec模型~\cite{mikolov2013distributed}，使用稠密的词向量表达解决了传统的词向量的one-hot编码的维数灾难问题，而且word2vec的这种表达使得词向量具有词的语义信息，可以直接用来计算不同词之间的相似度。Sepp等人~\cite{hochreiter1997long}提出长短期记忆网络（Long Short-term Memory，LSTM），后来Kyunghyun等人~\cite{cho2014learning}进一步提出门控循环单元（Gated Recurrent Unit，GRU），捕捉序列号的数据的上下文信息。而在视频和自然语言的跨模态领域同样也有大量基于深度学习的工作~\cite{venugopalan2015sequence,yao2015describing,otani2016learning,dong2018predicting,sun2019videobert,miech2019howto100m}，虽然基于深度学习的技术在视频检索领域有了很大进展~\cite{mithun2018learning,miech2018learning,dong2019dual,liu2019use}，但是这个领域仍然有很大的提升空间。因此本文基于深度学习研究即席视频检索，提高视频检索的效果，具有深远的应用价值和研究价值。
 
 
 \section{本文研究内容}
-如表格~\ref{tab:method-diffs}所示，在大型的即席视频检索挑战的基准线如TRECVID系列，早期的大部分最先进的技术都是基于概念建模，即查询和视频都以概念向量表达~\cite{le2016nii,foteini2016iti,nguyen2017vireo,ueki2017waseda}。对于查询表达，通过选择一个或几个与查询文本在词法上~\cite{lu2016event,ueki2017waseda}或者在语义上~\cite{markatopoulou2017query,snoek2017university}匹配的概念来表示查询，而对于视频表示，在图像或视频识别数据集（如ImageNet~\cite{deng2009imagenet}，EventNet~\cite{ye2015eventnet}和FC-VID~\cite{jiang2018exploiting}等等）上预训练的深度卷积神经网络被用来预测视频的概念，从而组成视频的概念向量。尽管这种方法有着很好的解释性，但是基于概念的表示方法也有两个缺点：首先，选择合适数量的合适概念来可靠地描述视频内容和查询是十分困难的；第二，查询表达的某个特定的概念的重要性是根据经验进行估计的（例如根据某个概念与查询的语义相关性来估计该概念的重要性），并且这种方法在跨模态的相似度计算也不是最优的。
+如表格~\ref{tab:method-diffs}所示，在大规模的即席视频检索挑战的基准线如TRECVID系列，早期的大部分最先进的技术都是基于概念建模，即查询和视频都以概念向量表达~\cite{le2016nii,foteini2016iti,nguyen2017vireo,ueki2017waseda}。对于查询表达，通过选择一个或几个与查询文本在词法上~\cite{lu2016event,ueki2017waseda}或者在语义上~\cite{markatopoulou2017query,snoek2017university}匹配的概念来表示查询，而对于视频表示，在图像或视频识别数据集（如ImageNet~\cite{deng2009imagenet}，EventNet~\cite{ye2015eventnet}和FC-VID~\cite{jiang2018exploiting}等等）上预训练的深度卷积神经网络被用来预测视频的概念，从而组成视频的概念向量。尽管这种方法有着很好的解释性，但是基于概念的表示方法也有两个缺点：首先，选择合适数量的合适概念来可靠地描述视频内容和查询是十分困难的；第二，查询表达的某个特定的概念的重要性是根据经验进行估计的（例如根据某个概念与查询的语义相关性来估计该概念的重要性），并且这种方法在跨模态的相似度计算也不是最优的。
 
-由于基于概念的方法有这些不足，本文研究一种不需要进行显式的概念建模、概念匹配和概念选择的完全基于深度学习的方法。在以文本检索图像领域，Faghri等人~\cite{faghri2017vse++}提出的VSE++模型使用门控循环单元（Gated Recurrent Unit, GRU）网络来对查询进行建模，而Dong等人~\cite{dong2018predicting}提出的Word2VisualVec（W2VV）模型使用多尺度的文本编码策略，被证明了这种编码策略比仅使用GRU的要好，Mithun等人~\cite{mithun2018learning}则对VSE++进行了改进以适应于视频和文本的检索任务。而基于深度学习技术的查询表达方法很少被用在大型的即席视频检索任务上，如TRECVID系列。而且在即席视频检索上的大多数方法都是基于单一的公共空间，即使使用了多个不同的特征表达也只是用特征拼接的方式进行了融合~\cite{li2018renmin,wu2019hybrid}，而在视频与文本检索上，Miech等人~\cite{miech2018learning}使用了四个视频特征的表达，并且为每个特征学习一个独立的公共空间，最后使用平均融合的方法融合这四个空间。而本文在大型即席视频检索上研究为多个文本的表达学习独立的公共空间并且融合这些独立的公共空间。
+由于基于概念的方法有这些不足，本文研究一种不需要进行显式的概念建模、概念匹配和概念选择的完全基于深度学习的方法。在以文本检索图像领域，Faghri等人~\cite{faghri2017vse++}提出的VSE++模型使用门控循环单元（Gated Recurrent Unit, GRU）网络来对查询进行建模，而Dong等人~\cite{dong2018predicting}提出的Word2VisualVec（W2VV）模型使用多尺度的文本编码策略，被证明了这种编码策略比仅使用GRU的要好，Mithun等人~\cite{mithun2018learning}则对VSE++进行了改进以适应于视频和文本的检索任务。而基于深度学习技术的查询表达方法很少被用在大规模的即席视频检索任务上，如TRECVID系列。而且在即席视频检索上的大多数方法都是基于单一的公共空间，即使使用了多个不同的特征表达也只是用特征拼接的方式进行了融合~\cite{li2018renmin,wu2019hybrid}，而在视频与文本检索上，Miech等人~\cite{miech2018learning}使用了四个视频特征的表达，并且为每个特征学习一个独立的公共空间，最后使用平均融合的方法融合这四个空间。而本文在大规模的即席视频检索上研究为多个文本的表达学习独立的公共空间并且融合这些独立的公共空间。
 
 本文的贡献可归纳为如下几个方面：
 \begin{enumerate}[1.]
 \item 技术上，通过对W2VV（原本用于图像-文本匹配）进行改进并再适用在即席视频检索任务上，本文提出了一种新的方法W2VV++，有效地提高了即席视频检索的准确率。而对比之前基于概念建模的方法，W2VV++不用对查询表达进行启发式地关键词匹配。在W2VV++模型的基础上，本文继续提出为多个句子编码器学习独立的公共子空间并在同一模型下融合这些子空间的方法（Sentence Encoder Assembly，SEA），进一步提高了即席视频检索的效果，在MSR-VTT和TRECVID数据集上均超过了当前最好的视频检索算法，为即席视频检索建立了新的基准线。
 
-\item 概念上，本文提出的基于深度学习的端到端的算法模型在TRECVID上均超过了过去基于概念的算法模型，成功挑战了过去基于概念的方法，首次证明了深度学习技术在大型即席视频检索任务上，如TRECVID系列，具有可行性和有效性。
+\item 概念上，本文提出的基于深度学习的端到端的算法模型在TRECVID上均超过了过去基于概念的算法模型，成功挑战了过去基于概念的方法，首次证明了深度学习技术在大规模的即席视频检索任务上，如TRECVID系列，具有可行性和有效性。
 
 \end{enumerate}
 

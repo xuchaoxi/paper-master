@@ -18,7 +18,7 @@
 的特征或者概念向量表示。
 
 \section{句子编码器}
-本文是建立在Word2VisualVec（W2VV）~\cite{dong2018predicting}模型的基础上，W2VV模型原本是用在图像描述或者视频描述的检索任务上，概念模型图如\ref{fig:base-w2vv}所示，该模型共包含两个子网络，即一个句子编码网络，把一个句子向量化和一个转换网络，将句子向量转换到视觉特征空间中。W2VV模型的句子编码网络由三个文本编码器并行对句子进行向量化，即bag-of-words (bow)，word2vec (w2v)和Gated Recurrent Unit (GRU)，最后使用拼接的方式融合由这三种编码器得到句子向量，而转换网络是由多层全连接层组成的多层感知机，他们的训练目标是最小化在视觉空间中的句子向量和视频向量之间的均方误差（Mean Square Error，MSE）。考虑到W2VV模型使用的GRU编码器只取了最后时刻的输出向量，并且只通过简单地拼接这三种向量，作为句子的向量表示不是一种最优的方法，训练时只考虑减小正样本视频-文本对的欧式距离，并没有增大考虑负样本视频-文本对的距离，而对于一个新来的查询句子，可能会与负样本视频的距离同样很小，因此这也不是一个最优的训练目标。
+本文是建立在Word2VisualVec（W2VV）~\cite{dong2018predicting}模型的基础上，W2VV模型原本是用在图像描述或者视频描述的检索任务上，概念模型图如\ref{fig:base-w2vv}所示，该模型共包含两个子网络，即一个句子编码网络，把一个句子向量化和一个转换网络，将句子向量转换到视觉特征空间中。W2VV模型的句子编码网络由三个文本编码器并行对句子进行向量化，即bag-of-words (bow)，word2vec (w2v)和Gated Recurrent Unit (GRU)，最后使用拼接的方式融合由这三种编码器得到句子向量，而转换网络是由多层全连接层组成的多层感知机，他们的训练目标是最小化在视觉空间中的句子向量和视频向量之间的均方误差（Mean Square Error，MSE）。考虑到W2VV模型使用的GRU编码器只取了最后时刻的输出向量，并且只通过简单地拼接这三种向量，作为句子的向量表示不是一种最优的方法，训练时只考虑减小正样本视频-文本对的欧式距离，并没有考虑增大负样本视频-文本对的距离，而对于一个新来的查询句子，可能会与负样本视频的距离同样很小，因此这也不是一个最优的训练目标。
 \begin{figure*}[tbh!]
     \centering
     \includegraphics[width=\linewidth]{figures/w2vv-model}
@@ -26,7 +26,7 @@
     \label{fig:base-w2vv}
 \end{figure*}
 
-鉴于此，本文基于W2VV模型使用一个更优的编码策略和一个更优的目标函数用于训练，即对于GRU，本文采用平均池化的方法处理其所有的隐藏状态输出表示该文本的GRU输出，并且使用improved triplet ranking loss (ITRL)~\cite{faghri2017vse++}作为训练目标，该训练目标在训练时同时增大正样本视频-文本对的相似度并且减小负样本视频-文本对的相似度，为了方便，本文将此模型命名为W2VV++，模型结构图如图~\ref{fig:w2vv++}所示。而对于不同的编码器之间的融合，本文在W2VV++的基础上继续研究多子空间融合的方法，即为不同的编码器独立构建公共的跨模态空间，最后在同一个模型内融合这些公共空间得到最终的跨模态相似度计算，本文将这种融合模型称为Sentence Encoder Assembly (SEA)，模型结构图如图~\ref{fig:sea}。接下来，本文将介绍本文使用的三种文本编码器，即bag-of-words (bow)，word2vec (w2v)和Gated Recurrent Unit (GRU)。
+鉴于此，本文基于W2VV模型使用一个更优的编码策略和一个更优的目标函数用于训练，即对于GRU，本文采用平均池化的方法处理其所有的隐藏状态输出表示该文本的GRU输出，并且使用improved triplet ranking loss (ITRL)~\cite{faghri2017vse++}作为训练目标，该训练目标在训练时同时增大正样本视频-文本对的相似度并且减小负样本视频-文本对的相似度，本文将此模型命名为W2VV++，模型结构图如图~\ref{fig:w2vv++}所示。而对于不同的编码器之间的融合，本文在W2VV++的基础上继续研究多子空间融合的方法，即为不同的编码器独立构建公共的跨模态空间，最后在同一个模型内融合这些公共空间得到最终的跨模态相似度计算，本文将这种融合模型称为Sentence Encoder Assembly (SEA)，模型结构图如图~\ref{fig:sea}。接下来，本文将介绍本文使用的三种文本编码器，即bag-of-words (bow)，word2vec (w2v)和Gated Recurrent Unit (GRU)。
 
 \begin{figure*}[tbh!]
     \centering
@@ -84,9 +84,9 @@ $\sigma_g$表示sigmoid函数，$\sigma_h$表示双曲正切函数，操作$\cir
 \end{equation}
 对于GRU词典，与bow词典类似，但是GRU词典还包含停用词，因为它们在自然语句中是含有意义的上下文信息。
 
-W2VV++模型：如图~\ref{fig:w2vv++}所示，W2VV++模型通过使用拼接的方式融合这三种编码器输出的向量，设$e_{ms}(s)=[e_{bow}(s);e_{w2v}(s);e_{gru}(s)]$，其中$[;;]$表示向量拼接操作，向量$e_{ms}(s)$通过转换网络投影到与视频的公共跨模态空间，在该公共空间计算查询句子与视频的相似度$cms(s,v)$。
+W2VV++模型：如图~\ref{fig:w2vv++}所示，W2VV++模型通过使用拼接的方式融合这三种编码器输出的向量，令$e_{ms}(s)=e_{bow}(s) \oplus e_{w2v}(s) \oplus e_{gru}(s)$，其中$\oplus$表示向量拼接操作，向量$e_{ms}(s)$通过转换网络投影到与视频的公共跨模态空间，在该公共空间计算查询句子与视频的相似度$cms(s,v)$。
 
-SEA模型：如图~\ref{fig:sea}所示，SEA模型通过为每个编码器构建一个独立的公共跨模态空间，在每个公共空间单独计算查询句子与视频的相似度$cms_i(s)$，$i$表示在第$i$个公共空间，并使用相加的方式融合各个空间中的相似度作为最终的查询句子与视频的相似度，即$cms_1(s,v)+cms_2(s,v)+cms_3(s,v)$。
+SEA模型：如图~\ref{fig:sea}所示，SEA模型通过为每个编码器构建一个独立的公共跨模态空间，在每个公共空间单独计算查询句子与视频的相似度$cms_i(s)$，$i$表示在第$i$个公共空间，并使用平均的方式融合各个空间中的相似度作为最终的查询句子与视频的相似度，即$\frac{1}{3}(cms_1(s,v)+cms_2(s,v)+cms_3(s,v))$。
 
 %对于多种编码方式(bow, w2v, GRU)对句子进行编码，本文使用两种策略对这些编码方式进行融合，即:
 %\begin{itemize}
@@ -113,7 +113,7 @@ ResNeXt-101~\cite{xie2017aggregated}和ResNet-152~\cite{he2016deep}。对于每�
 平均池化操作，得到该图像的特征表示。相应地，2048维的视频特征由帧图像特征进行平均池化得到。为了方便表示，本文将使用$ResNeXt$和$ResNet$
 表示经过这两种卷积网络得到的视频特征，$ResNeXt$-$ResNet$表示这两种特征进行拼接得到的4096维的视频特征，设视频$v$的深度卷积特征向量为$f(v) \in \mathbb{R}^{d_v}$。
 
-原则上，本文的模型可以使用任何的视频特征表示，包括概念特征向量~\cite{markatopoulou2017query,lu2016event,merler2012semantic}和3D卷积网络特征~\cite{mithun2018learning}。
+理论上，本文的模型可以使用任何的视频特征表示，包括概念特征向量~\cite{markatopoulou2017query,lu2016event,merler2012semantic}和3D卷积网络特征~\cite{mithun2018learning}。
 
 \section{转换网络}
 由前文可在，计算查询句子$s$和视频$v$的跨模态相似度$cms(s,v)$需要将$s$和$v$在公共的跨模态空间进行向量化表示，则在得到句子的编码向量表示和视频的特征表示后，关键一步是将这两个模态的向量化表示转换到维度相同向量。转换网络以上一层的编码网络输出作为输入，并将输入的向量转换成另一个维度的向量。
@@ -196,7 +196,7 @@ SEA模型：该模型为每个句子编码器（bow，w2v，GRU）对查询句�
 
 \begin{figure*}[tbh!]
     \centering
-    \includegraphics[width=\linewidth]{figures/single_vs_combined_loss}
+    \includegraphics[width=\linewidth]{figures/single_vs_combined_loss_v2}
     \caption[训练过程中对于特定的句子SEA模型自动选择的最难负样本视频的示例图]{\bfseries{训练过程中对于特定的句子SEA模型自动选择的最难负样本视频的示例图。第一列(a)根据先融合多空间的相似度再计算ITRL目标函数选择的最难负样本（SEA single loss），而另外三列是根据为每个公共空间计算ITRL目标函数（SEA combined loss），而(b)，(c)，(d)分别为句子编码器$e_{bow}$，$e_{w2v}$和$e_{gru}$所投影的公共空间中选择的最难负样本。可见融合多空间的目标函数可以在每个批次产生更多样性的最难负样本。}}
     \label{fig:negative-examples}
 \end{figure*}

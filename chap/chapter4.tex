@@ -12,7 +12,7 @@
 具体是余弦相似度最大的句子视频对作为最难负例。本文的W2VV++模型和SEA模型所有的公共跨模态空间的维度设为2048维。根据Faghri等人的文献~\cite{faghri2017vse++}，目标函数公式\ref{eq:itrl}的超参数$\alpha$设为0.2。为了避免出现过拟合，本文在转换网络的全连接层使用概率为0.2的随机失活策略。本文的所有实验都在具有Nvidia GEFORCE GTX 1080Ti GPU显卡的服务器上进行。
 
 \section{实验设置}
-为了验证本文提出的W2VV++模型和SEA模型的有效性，本文在两个公开的视频数据基准线：MSR-VTT~\cite{msrvtt}和TRECVID AVS~\cite{awad2016trecvid}上进行实验。尽管MSR-VTT最初是用来研究视频描述生成的数据集，但是也有很多的基于文本的视频检索的工作~\cite{mithun2018learning,miech2019howto100m,dong2019dual,liu2019use,yu2018a}在该数据集上进行了尝试，TRECVID AVS是自从2016年以来在即席视频检索领域一个大型的非常重要的基准线~\cite{awad2016trecvid,awad2017trecvid,awad2018trecvid,awad2019trecvid}，这两个基准线都有各自的特点。如表格~\ref{tab:datasets}所示，MSR-VTT的测试数据集的视频数量相对较少，只有2,990个视频，而每个视频具有20个句子描述，一共59,800个句子描述。而TRECVID AVS具有大量的测试视频，在2016、2017和2018年的测试里面有超过了33.5万个测试视频，在2019年有超过100万个测试视频。因此，在这两个数据基准线上进行详尽的实验可以公平地验证算法模型的有效性。
+为了验证本文提出的W2VV++模型和SEA模型的有效性，本文在两个公开的视频数据基准线：MSR-VTT~\cite{msrvtt}和TRECVID AVS~\cite{awad2016trecvid}上进行实验。尽管MSR-VTT最初是用来研究视频描述生成的数据集，但是也有很多的基于文本的视频检索的工作~\cite{mithun2018learning,miech2019howto100m,dong2019dual,liu2019use,yu2018a}在该数据集上进行了尝试，TRECVID AVS是自从2016年以来在即席视频检索领域一个大规模的非常重要的基准线~\cite{awad2016trecvid,awad2017trecvid,awad2018trecvid,awad2019trecvid}，这两个基准线都有各自的特点。如表格~\ref{tab:datasets}所示，MSR-VTT的测试数据集的视频数量相对较少，只有2,990个视频，而每个视频具有20个句子描述，一共59,800个句子描述。而TRECVID AVS具有大量的测试视频，在2016、2017和2018年的测试里面有超过了33.5万个测试视频，在2019年有超过100万个测试视频。因此，在这两个数据基准线上进行详尽的实验可以公平地验证算法模型的有效性。
 
 \input{chap/table-data}
 
@@ -80,8 +80,22 @@ $\bullet$ CE~\cite{liu2019use}: 使用 NetVLAD 作为文本编码器。\\
 
 \input{chap/table-tv}
 
-
 \section{即席视频检索结果展示}
+    图~\ref{fig:search_examples}与图~\ref{fig:search_examples2}都展示了对于W2VV，W2VV++，SEA三个模型分别在超过一百万个的未标注的视频的大规模的视频集V3C1~\cite{berns2019v3c1}上的视频检索结果，查询句子由TRECVID AVS评测官方提供~\cite{awad2016trecvid,awad2017trecvid,awad2018trecvid,awad2019trecvid}。更多的查询结果展示在附录~\ref{app:app-a}。
+
+\begin{figure*}[tbh!]
+    \centering
+    \includegraphics[width=\linewidth]{figures/search_examples}
+    \caption[即席视频检索结果展示]{\textbf{即席视频检索结果展示。对于来自TRECVID AVS评测~\cite{awad2016trecvid,awad2017trecvid,awad2018trecvid,awad2019trecvid}的查询句子，从超过一百万个未标注的视频的大规模的视频集V3C1~\cite{berns2019v3c1}中检索出与查询最相关的前5个视频。对于每个查询，第一行、第二行、第三行分别显示的是W2VV、W2VV++和SEA模型的检索结果。为了更好地展示检索效果，这里展示的是视频的关键帧。}}
+    \label{fig:search_examples}
+\end{figure*}
+
+\begin{figure*}[tbh!]
+    \centering
+    \includegraphics[width=\linewidth]{figures/search_examples2}
+    \caption[即席视频检索结果展示（续）]{\textbf{即席视频检索结果展示（续）。对于来自TRECVID AVS评测~\cite{awad2016trecvid,awad2017trecvid,awad2018trecvid,awad2019trecvid}的查询句子，从超过一百万个未标注的视频的大规模的视频集V3C1~\cite{berns2019v3c1}中检索出与查询最相关的前5个视频。对于每个查询，第一行、第二行、第三行分别显示的是W2VV、W2VV++和SEA模型的检索结果。为了更好地展示检索效果，这里展示的是视频的关键帧。}}
+    \label{fig:search_examples2}
+\end{figure*}
 
 
 \section{本章小结}

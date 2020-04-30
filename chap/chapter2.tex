@@ -77,14 +77,14 @@ Ueki等人~\cite{ueki2019waseda}为了充分提取视频的图像信息，使用
 
 Liu等人~\cite{liu2019use}尽可能地挖掘了视频信息，他们提取了视频的物体特征、场景特征、动作特征、人脸特征、字符特征（optical character recognition，OCR）、言语（speech）特征和音频（audio）特征。他们首先使用深度卷积神经网络SENet-154~\cite{hu2019squeeze}模型提取视频帧图像的物体特征，在Places365~\cite{zhou2018places}数据上预训练的DenseNet-161~\cite{huang2017densely}提取帧图像的场景特征，双流卷积神经网络I3D提取连续帧图像的动作特征。而对于人脸特征，他们先使用人脸目标检测网络SSD~\cite{liu2016ssd}来提取帧图像中的人脸，然后再使用在VGGFace2~\cite{cao2018vggface2}数据上预训练的ResNet-50提取每个检测出的人脸的特征。对于OCR特征，他们先使用文本检测模型PixelLink~\cite{deng2018pixellink}来定位图像中的文本位置，然后每个文本框内的图像区域经过一个在文本识别数据Synth90K~\cite{liu2018synthetically}的模型~\cite{jakub-mm19}得到一序列字符串的文本，最后文本的每个单词的向量由预训练的word2vec模型提取。对于言语特征，他们使用谷歌云的API来对声音提取单词，然后得到的句子的单词的向量同样由word2vec模型提取。对于音频特征，他们使用在Youtube-8m~\cite{abuelhaija2016youtube}上预训练的audio CNN~\cite{hershey2017cnn}提取。最后，他们使用平均池化的方法来处理这些帧图像的物体特征、场景特征、动作特征和人脸特征，而使用NetVLAD的方法聚合OCR特征、言语特征和音频特征，从而最终得到视频级的相应的特征表示。为了融合所有的这些视频级特征，他们首先将这些特征做了线性投影，将所有特征转换到相同维度的特征，然后计算两两特征之间的关系，然后根据这个关系对转换后的特征进行缩放处理得到新的特征表示，使得有效的信息的权重加大，而冗余或者无效的信息被抑制，从而为模型提供了更加准确有效的特征作为输入。最终所有的视频特征都经过Gated Embedding Module~\cite{miech2018learning}处理，具体如公式~\ref{eq:gated-embedding-module}，然后对所有的输出进行拼接并做L2规范化，得到最终的视频特征。而对于文本的表示，他们先用预训练的word2vec模型对句子的每个单词进行编码，然后这些单词编码再经过OpenAI-GPT~\cite{radford2018improving}模型，最后所有的输出通过NetVLAD进行聚合从而得到整个句子的编码，为了计算句子与视频的相似度，他们使用Gated Embedding Module为每个视频特征对句子编码进行处理，从而得到与视频特征维度相同的句子特征。他们使用余弦相似度计算句子与视频的相似度，并使用双向的排序损失函数（bidirectional marginal ranking loss）监督模型的训练。这种方法尽可能地使用了视频的信息，并且通过拼接的方法为每个视频特征学习跨模态计算的子空间，并将各个子空间的相似度相加融合。
 
-Dong等人在文献~\cite{dong2018predicting}和Li等人在文献~\cite{li2019w2vv++}中通过拼接的方式融合了三种文本编码特征，即bag-of-words（bow）、word2vec和GRU，并且使用ResNet-152、ResNeXt-101为视频提取视觉特征。Dong等人~\cite{dong2018predicting}将拼接后的文本特征投影到视觉特征空间，在视觉特征空间中计算两种模态的距离。而Li等人~\cite{li2019w2vv++}将文本特征投影到视觉特征空间或将两种模态的特征同时投影到公共的隐空间，并在公共空间中计算文本和视频的余弦相似度。而Dong等人在文献~\cite{dong2019dual}进一步提出使用对偶的多层编码方式分别对文本和视频进行编码表示，他们的模型结构如图~\ref{fig:related_dong2019}所示，他们分别使用多层相似的编码方式对视频的帧特征和文本编码，即使用bow，bidirectional GRU（biGRU），并使用1D-CNN作用在bi-GRU的输出的所有隐藏层特征（biGRU-CNN），而在视频编码上，他们先使用ResNet-152对视频的帧图像提取视频特征，然后使用平均池化、biGRU和biGRU-CNN这三种方式对帧图像特征进行聚合得到三种层次的视频级特征，他们分别对文本的三种编码特征对视频的三种编码得到的视频特征进行拼接来表示文本和视频，最后使用全连接层对这两种模态的特征投影到公共的隐空间，从而在这个学习的隐空间中可以计算文本和视频的余弦相似度。
-
 \begin{figure*}[tbh!]
     \centering
     \includegraphics[width=\linewidth]{figures/related_dong2019}
     \caption[Dong等人~\cite{dong2019dual}的对偶编码网络模型结构图]{\textbf{对偶编码网络模型结构图}，来自~\cite{dong2019dual}。}
     \label{fig:related_dong2019}
 \end{figure*}
+
+Dong等人在文献~\cite{dong2018predicting}和Li等人在文献~\cite{li2019w2vv++}中通过拼接的方式融合了三种文本编码特征，即bag-of-words（bow）、word2vec和GRU，并且使用ResNet-152、ResNeXt-101为视频提取视觉特征。Dong等人~\cite{dong2018predicting}将拼接后的文本特征投影到视觉特征空间，在视觉特征空间中计算两种模态的距离。而Li等人~\cite{li2019w2vv++}将文本特征投影到视觉特征空间或将两种模态的特征同时投影到公共的隐空间，并在公共空间中计算文本和视频的余弦相似度。而Dong等人在文献~\cite{dong2019dual}进一步提出使用对偶的多层编码方式分别对文本和视频进行编码表示，他们的模型结构如图~\ref{fig:related_dong2019}所示，他们分别使用多层相似的编码方式对视频的帧特征和文本编码，即使用bow，bidirectional GRU（biGRU），并使用1D-CNN作用在bi-GRU的输出的所有隐藏层特征（biGRU-CNN），而在视频编码上，他们先使用ResNet-152对视频的帧图像提取视频特征，然后使用平均池化、biGRU和biGRU-CNN这三种方式对帧图像特征进行聚合得到三种层次的视频级特征，他们分别对文本的三种编码特征对视频的三种编码得到的视频特征进行拼接来表示文本和视频，最后使用全连接层对这两种模态的特征投影到公共的隐空间，从而在这个学习的隐空间中可以计算文本和视频的余弦相似度。
 
 \section{本章小结}
 本章首先回顾了近四年的TRECVID评测中的即席检索视频系统，可以发现即席视频检索技术是逐渐由基于概念的模型向基于完全深度学习的模型发展，近年来越来越多的即席视频检索技术是基于完全深度学习的方法，并取得了优秀的成绩。本文另一方面也回顾了一些基于文本的跨模态视频检索技术，因为文本与视频都是具有非常复杂语义信息的媒体数据，这些技术都采用了多种视频特征或者文本特征，并在同一个模型下融合这些特征，得到了更加出色检索的效果。
